@@ -1,0 +1,262 @@
+#+TITLE: Power Emacs
+# Fun idea - typing in name while holding down Ctrl
+# What you learn this day will forever serve as your firm foundation in the arts of Emacs, no matter who your teachers before and after.
+* Getting started
+  Some preliminary knowledge to make things work nicely.
+** Installing emacs
+   - Linux
+     Easy! Just, check emacs --version... Debian Wheezy has a really old one
+   - Windows
+     Do make sure to install Emacs on your local machine, 
+     it's much more useful than vim is on Windows.
+     Check out: 
+     http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/index.html
+   - OS X
+     Apple ships an old version
+     http://emacsformacosx.com/
+     or
+     brew install emacs --cocoa
+     You'll need to manually add it to your PATH 
+     to make the newer version available on the command line.
+** keybinding notation
+   - C-h for Ctrl-h
+   - M-! for Alt-! 
+     (Alt is historically known as the Meta key)
+   - C-x C-c for Ctrl-x then immediately Ctrl-c
+** TODO Ctrl-g
+** Ctrl
+   You must remap CapsLock to Ctrl, it's the law (and very useful)
+   You can follow this guide: http://emacswiki.org/emacs/MovingTheCtrlKey
+** GUImacs
+   It's better to use GUI Emacs rather than terminal Emacs.
+   But if you must use Emacs in the terminal, 
+   read my article on the various quirks and limitations of the terminal environment: 
+   http://catern.com/posts/terminal_quirks.html
+   (If you wonder why using GUI Emacs is better, that article is also a sufficient explanation.)
+** emacs --daemon
+   This command will start emacs as a daemon.
+   This is really how all software should work.
+   It will sit in the background and do the heavy lifting, 
+   keeping all your buffers/files/state open.
+
+   If you crash or have to log out, 
+   everything is still there in the background.
+
+   When you want to run emacs, you run emacsclient.
+   It creates an appropriately graphical or terminal or whatever "window" 
+   (known as a frame in emacs)
+   which connects to the daemon to show your buffers.
+   This is very handy for remote work, and many other things.
+
+   It's basically how every application should work,
+   but only Emacs is advanced enough to have it.
+*** Multiple open
+    You can open the same file multiple times and everything is shared between those sessions; 
+    where vim would complain about other processes being open, Emacs will communicate to keep everything in sync.
+    It just works perfectly and seamlessly like you'd want.
+    This is based on emacs --daemon, emacs running in daemon mode. 
+    It lets you do other cool, fancy, useful things.
+    For instance, you can open as many graphical and terminal (client) instances of emacs as you want, 
+    each editing whatever file or files you want,
+    and they all share the same buffers and registers and all that stuff.
+** Terminology
+   This is all listed in the Emacs glossary, which is in the Emacs manual, which you can access from Emacs (explain later).
+
+
+   - Buffers
+     When you open a file, its text appears in a buffer, and you can edit it.
+     Each buffer has a name, which is usually the name of the file.
+     You can also create buffers that aren't associated with files, and save them (specifying a filename) to create a new file.
+     You can create a new buffer by switching to a buffer with a name that isn't already used.
+
+   - Frames
+     Each instance of Emacs on a terminal, and each graphical instance, is a frame.
+     An Emacs process can have multiple frames, both terminal and graphical, which can be opened and closed independently.
+     Frames contain one or more windows in some arrangement.
+
+   - Windows
+     A window contains exactly one buffer, and is itself contained in a frame.
+     There can be multiple windows showing the same buffer, sometimes at different points in the buffer;
+     this is useful if you want to get multiple views into a large file.
+
+* Learning and Documentation
+** Emacs tutorial: C-h t
+   Tell them in advance to do this with "emacs -f help-with-tutorial"
+
+   Even more helpful than the vim tutorial.
+   Do it even if you use evil-mode - just press C-z first to enter the Emacs state.
+** C-h
+   The beautiful, amazing help command
+   - C-h k
+     Type a keybinding to get what it does
+   - C-h f
+     Put your cursor on a function name, or just type one, to get its docs
+   - C-h v
+     Put your cursor on a variable, or just type one, to get its docs
+   - C-h m
+     Get info about the keybindings of the current major mode
+     (for evil-mode, many things will be listed as shadowed)
+** Manuals in M-x info
+   The Emacs manual is seriously useful.
+   Legitimately, seriously, look there first when you want to do something.
+   It is the best documentation I have ever seen.
+   And, conveniently, it's all available from inside Emacs!
+
+   Open info: =M-x info= or =C-h i=
+   Open the info tutorial (the help on how to use the help!): =M-x Info-help=
+   Open manual section about keybinding: =C-h K=
+*** Exercise: Navigate to the Help section of the Emacs manual
+    =C-h K C-h C-h=
+    
+    (That is, use =C-h K= to open the manual section about the following keybinding =C-h C-h=)
+
+    This is a great section of the manual.
+*** Greatest hits
+    Some manuals that are full of cool stuff!
+    Emacs
+    Emacs FAQ
+    Elisp
+    Eshell
+*** Manuals on Debian
+    Debian considers Emacs docs to be non-free, so you'll have to install the docs separately, with the package =emacs24-common-non-dfsg=.
+    (This is very ironic, yes).
+** If you are surprised
+   This is a useful feature (explained here by a quote from the manual):
+#+begin_quote
+If something surprising happens, and you are not sure what you typed,
+use ‘C-h l’ (‘view-lossage’).  ‘C-h l’ displays your last 300 input
+keystrokes.  If you see commands that you don’t know, you can use ‘C-h
+c’ to find out what they do.
+#+end_quote
+** Menu bar
+   The menus are pretty handy.
+   They change with what modes are active, providing access to useful functionality for the current mode.
+   Use them!
+   Even experienced Emacs users make use of them when exploring new modes and functionality.
+
+   If you're not in GUI mode, you can use =<F10>= or =M-x menu-bar-open= to open the menu bar.
+   (=<F10>= might be intercepted by your terminal, 
+   but if you turn off the menu bar in, for example, GNOME Terminal, you can still use it)
+** Useful web resources
+   - http://emacsrocks.com/
+   - http://www.masteringemacs.org/reading-guide/
+     
+* More usage
+** TODO Macros
+   recording
+   editing macros
+** kill ring
+* Customization
+** basic init.el (workshop)
+   If you don't already have an init.el,
+#+BEGIN_SRC sh
+   wget http://www.cmucc.org/fall14/init.el -O ~/.emacs.d/init.el
+#+END_SRC
+   If you do have an init.el, download it anyway and compare.
+   There's some useful stuff.
+   If you want to use evil-mode (and you don't already have an init.el),
+#+BEGIN_SRC sh
+   wget http://www.cmucc.org/fall14/init-vim.el -O ~/.emacs.d/init.el
+#+END_SRC
+** Bootstrapping config
+   The first few lines of this config install the packages you'll need in addition to stock Emacs.
+   Emacs ships with a package management system, so this is trivial.
+* Packages and functionality
+** TRAMP
+   TRAMP stands for "Transparent Remote Access, Multiple Protocols".
+   It basically integrates ssh 
+   (as well as some other protocols - I use the sudo one occassionally)
+   with Emacs.
+   This is really deep integration, so pretty much everything in Emacs can be done transparently over the network.
+   In fact, I used it when I was writing these notes, 
+   which I'm writing in Emacs using [[https://addons.mozilla.org/en-US/firefox/addon/its-all-text/][It's All Text]].
+   I'm on my laptop, and I wanted to get to some notes on my desktop, earth.
+   So, I just did C-x C-f /ssh:earth:/home/sbaugh/myemacsnotes and I had the notes open in a buffer. 
+   (for evil-mode users, :e instead of C-x C-f)
+   This all tab-completed of course; 
+   Emacs knows the host "earth" that I defined in my .ssh/config, 
+   and it opened the connection as soon as I hit tab for the first time after typing the "/ssh:mydesktop:/" component,
+   so I had tab-completion on the remote path.
+   This works for remote file operations with M-x dired,
+   opening a remote shell with M-x shell,
+   pretty much everything.
+   For serious shell work I still ssh to hosts directly, of course.
+   But for just many tasks, it's very handy to be able to directly edit a file that lives on a remote host and still use my local Emacs configuration.
+** magit
+   A really great git interface, makes things convenient without abstraction.
+   - http://magit.github.io/
+   - http://www.masteringemacs.org/articles/2013/12/06/introduction-magit-emacs-mode-git/
+** evil-mode
+   - advantage: the find and replace is visual and incremental
+     :%s/rep..ce/replace
+** undo-tree
+#+begin_src emacs-lisp
+(undo-tree-visualize)
+#+end_src
+** org-mode
+   A very useful note-taking, planning and publishing mode.
+   http://orgmode.org/
+** dunnet
+#+begin_src emacs-lisp
+(dunnet)
+#+end_src
+* elisp and extension
+** Lisp basics
+   http://learnxinyminutes.com/docs/elisp/
+   (I really like that site)
+   
+   More in depth stuff:
+   https://github.com/chrisdone/elisp-guide
+   
+   If you really want to learn Lisp, go for the classic, mighty, wizardly book:
+   SICP
+   http://mitpress.mit.edu/sicp/
+   (It's very famous)
+** write a time-tracking extension (workshop)
+   Use quantified self extension as an example of the ease of configuration
+* Practices that go well with Emacs
+** keyboard based workflow
+   Basically anything that enables a keyboard based workflow.
+   By not moving your hands to the mouse or even to Home/End/etc, you can type and edit faster.
+   Just make sure you know how to touch type.
+** Semantic Linefeeds!
+   One sentence (or clause) per line.
+   Pretty much every kind of structured text will just ignore single newlines (LaTeX, Markdown).
+   So, when using an editor that has a lot of tools for manipulating lines (pretty much everything), 
+   you gain a lot of power with this organization!
+   http://rhodesmill.org/brandon/2012/one-sentence-per-line/
+** tools with emacs-nature
+*** browser
+    - conkeror
+    - keysnail
+*** shell
+    Readline already has Emacs keybindings by default.
+    C-x C-e in bash by default drops you into your $EDITOR, which is hopefully some variation of emacsclient
+*** file manager
+    Dired is already quite okay.
+*** editing elsewhere
+    OS X has some fancy thing where you can have emacs keybindings in
+    every text editing field.
+    I'd be jealous, if Emacs keybindings didn't suck.
+* Advanced
+** org-mode
+   You can pretty much do everything in org-mode, 
+   it's an extremely powerful organization and publishing system.
+   Look at the manual, it's great.
+   http://orgmode.org/manual/index.html
+** Clojure
+   Now that you're in Emacs, you can use Clojure SO WELL it's insane.
+   Emacs is made for Lisps, and Clojure is a modern, hip Lisp.
+   UI primitives, 
+   system integration, 
+   and a few hot-spot functions that need maximum efficiency.
+   The rest is all Elisp that can be modified by the user at will.
+
+   Emacs is capalbe of asynchronous operations,
+   and easily integrates external programs.
+   I use the Emacs gdb interface all the time, 
+   and if I want to grep my project, it'll show up incrementally in a buffer without blocking the UI or stopping me from editing. 
+   
+   Vim on the other hand... well... it has its own built-in C reimplementation of spell-checking and encryption.
+   Emacs just uses aspell and PGP.
+   And we all know the troubles vim has with asynchronicity and integrating external programs.
