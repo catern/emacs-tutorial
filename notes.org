@@ -1,146 +1,456 @@
 #+TITLE: Power Emacs
 # Fun idea - typing in name while holding down Ctrl
 # What you learn this day will forever serve as your firm foundation in the arts of Emacs, no matter who your teachers before and after.
+# Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link! This will win hard!
+# Write the C-y for redo thing already!!
+# !!!! Configure c0 support! And also SML?
+# GUI mode in OS X has CMD-v shortcuts etc. enabled
+# Achievements?
+# Games?
+* Salespitch
+  One may speak great praise to vim,
+  but even the fiercest proponent must admit:
+  vim's claims to greatness are in no way uncontroversial.
+  I should know, I used vim for years, and I'm pretty much an expert. 
+  Besides its interesting keybindings, it doesn't have any real claims to superiority.
+  
+  On the other hand, 
+  there is an application that, in several dimensions, is uncontroversially the world's best.
+  It has the best help system of any application ever.
+  It is the best portable environment for Lisp hacking.
+  It is the world's most live-hackable and extensible system.
+  These are not controversial statements. They can be generally agreed on by everyone.
+  
+  I am describing Emacs,
+  and if you're interested,
+  come to my workshop,
+  and you can learn the more controversial truth:
+  It is the world's best text editor.
 * Getting started
   Some preliminary knowledge to make things work nicely.
-** Installing emacs
-   - Linux
-     Easy! Just, check emacs --version... Debian Wheezy has a really old one
-   - Windows
-     Do make sure to install Emacs on your local machine, 
-     it's much more useful than vim is on Windows.
-     Check out: 
-     http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/index.html
-   - OS X
-     Apple ships an old version
-     http://emacsformacosx.com/
-     or
-     brew install emacs --cocoa
-     You'll need to manually add it to your PATH 
-     to make the newer version available on the command line.
-** keybinding notation
-   - C-h for Ctrl-h
-   - M-! for Alt-! 
-     (Alt is historically known as the Meta key)
-   - C-x C-c for Ctrl-x then immediately Ctrl-c
-** TODO Ctrl-g
-** Ctrl
-   You must remap CapsLock to Ctrl, it's the law (and very useful)
-   You can follow this guide: http://emacswiki.org/emacs/MovingTheCtrlKey
-** GUImacs
-   It's better to use GUI Emacs rather than terminal Emacs.
-   But if you must use Emacs in the terminal, 
-   read my article on the various quirks and limitations of the terminal environment: 
-   http://catern.com/posts/terminal_quirks.html
-   (If you wonder why using GUI Emacs is better, that article is also a sufficient explanation.)
-** emacs --daemon
-   This command will start emacs as a daemon.
-   This is really how all software should work.
-   It will sit in the background and do the heavy lifting, 
-   keeping all your buffers/files/state open.
+** =Ctrl-g=
+   This is your universal panic key.
+   It interrupts whatever is happening and gets you back to a familiar state.
+   It's the equivalent of Ctrl-c, for Emacs.
+   If at first it doesn't seem to work, hit it some more!
+** Emacs tutorial
+   Do it!
+   
+   To enter the Emacs tutorial from the command line, enter
+#+begin_src sh
+emacs -f help-with-tutorial
+#+end_src
 
-   If you crash or have to log out, 
-   everything is still there in the background.
-
-   When you want to run emacs, you run emacsclient.
-   It creates an appropriately graphical or terminal or whatever "window" 
-   (known as a frame in emacs)
-   which connects to the daemon to show your buffers.
-   This is very handy for remote work, and many other things.
-
-   It's basically how every application should work,
-   but only Emacs is advanced enough to have it.
-*** Multiple open
-    You can open the same file multiple times and everything is shared between those sessions; 
-    where vim would complain about other processes being open, Emacs will communicate to keep everything in sync.
-    It just works perfectly and seamlessly like you'd want.
-    This is based on emacs --daemon, emacs running in daemon mode. 
-    It lets you do other cool, fancy, useful things.
-    For instance, you can open as many graphical and terminal (client) instances of emacs as you want, 
-    each editing whatever file or files you want,
-    and they all share the same buffers and registers and all that stuff.
+   To enter the Emacs tutorial while already inside Emacs, press "F1", then "t".
+   (If you don't have an "F1" key, you can press "C-h" instead, then "t")
 ** Terminology
-   This is all listed in the Emacs glossary, which is in the Emacs manual, which you can access from Emacs (explain later).
+   Emacs uses a small amount of unique terminology.
+   This is all mostly described in the Emacs tutorial,
+   and also in the Emacs glossary in the Emacs manual.
+   (which, as you will learn later in this document,
+   is one of the best manuals ever written)
 
+*** Keybinding notation
+    Emacs uses a shortened notation for denoting keyboard commands.
+    - =C-h= for Ctrl-h.
+      That is, hold down the Control key, press h, then release the Control key.
+    - =M-f= for Alt-f.
+      Alt is historically known as the Meta key, so M stands for Meta.
+    - =C-x C-s= for Ctrl-x then immediately Ctrl-s.
+      You don't need to release the Control key in between.
+    - =C-x s= for Ctrl-x then immediately just s
+    - =RET= for Return/Enter
+    - =SPC= for Space
+    - =DEL= for Backspace
+*** Buffers
+    When you open a file, its text appears in a buffer, and you can edit it.
+    Each buffer has a name, which is usually the name of the file.
+    You can also create buffers that aren't associated with files, and save them (specifying a filename) to create a new file.
+    You can create a new buffer by switching to a buffer with a name that isn't already used.
+    
+*** Frames
+    Each instance of Emacs on a terminal, and each graphical instance, is a frame.
+    (In the context of a graphical environment, this would be called a "window";
+    but that word doesn't make much sense in a terminal...)
+    An Emacs process can have multiple frames, both terminal and graphical, which can be opened and closed independently.
+    Frames contain one or more windows in some arrangement.
+    
+*** Windows
+    A window contains exactly one buffer. 
+    A window is itself contained in a frame, possibly along with other windows arranged in some layout.
+    There can be multiple windows showing the same buffer, sometimes at different points in the buffer;
+    this is useful if you want to get multiple views into a large file.
+    Indeed, there can be multiple frames showing the same buffer, all supporting simultaneous editing...
+*** Point
+    The position of the text cursor; where new text will be inserted if you type.
+*** Modes, major and minor
+    For any buffer, there is exactly one major mode, and any number of minor modes.
 
-   - Buffers
-     When you open a file, its text appears in a buffer, and you can edit it.
-     Each buffer has a name, which is usually the name of the file.
-     You can also create buffers that aren't associated with files, and save them (specifying a filename) to create a new file.
-     You can create a new buffer by switching to a buffer with a name that isn't already used.
+    The major mode determines the primary purpose and functionality of the buffer.
+    A buffer for editing C code would have c-mode as its major mode,
+    and a buffer for editing Python code would have python-mode.
+    Those modes provide syntax highlighting and customize the keybindings to more suited for the specific language.
+    When you open a file ending in ".c" or ".py", Emacs automatically runs the appropriate mode.
+    Other major modes exist and provide other more arcane functionality.
+    
+    Minor modes generally provide less significant functionality,
+    and there can be any number of them active in a buffer.
+    Some minor modes are called "global", and can be turned on or off for all buffers at once.
+    
+    One can enter a major or minor mode in the same way one can enter any other Emacs command:
+    with =M-x name-of-mode=
+    Line numbers, for example, can be turned on for the current buffer by running =M-x linum-mode=,
+    or for all buffers with =M-x global-linum-mode=. (But I don't recommend it...)
+*** Minibuffer
+    The line at the very bottom of the screen 
+    where brief messages and prompts for input are displayed.
+*** Modeline
+    Just above the minibuffer,
+    displays the name of the current buffer,
+    the percentage position in the document,
+    the line number that point is at,
+    the currently active modes in short-form,
+    and occassionally other helpful information.
 
-   - Frames
-     Each instance of Emacs on a terminal, and each graphical instance, is a frame.
-     An Emacs process can have multiple frames, both terminal and graphical, which can be opened and closed independently.
-     Frames contain one or more windows in some arrangement.
+    Mouse over it in graphical Emacs to see tool-tips describing what everything is.
+** Running Emacs
+   Here are a few tips about how best to run Emacs. 
+   Just running =emacs= while SSH'd into unix.andrew.cmu.edu is fine, 
+   but you can make things easier for yourself if you try these methods...
+*** Installing Emacs
+    You should install Emacs locally on your personal computer (though you can still use it remotely if you must).
+    This has a number of benefits, including 
+    giving you the ability to use the GUI version of Emacs (and the mouse!),
+    working remotely with the integrated remote access functionality known as TRAMP,
+    being able to experiment more with Emacs features,
+    and getting access to the latest version of Emacs with the latest advancements.
+    
+    You can check your Emacs version by running "emacs --version" in a shell, 
+    or running "M-x version" from inside Emacs.
 
-   - Windows
-     A window contains exactly one buffer, and is itself contained in a frame.
-     There can be multiple windows showing the same buffer, sometimes at different points in the buffer;
-     this is useful if you want to get multiple views into a large file.
+**** Linux
+      Use your package manager. :)
+      (But do make sure you have a recent version, since your distro might be out of date...)
+**** OS X
+     Apple ships an ancient version of Emacs and doesn't include the GUI version.
+     Update your version of Emacs on OS X by downloading an installer from [[http://emacsformacosx.com/][here]].
+     Or, if you have Homebrew installed, run
+#+begin_src sh
+brew install emacs --cocoa
+#+end_src
 
+     To run the terminal version, you'll need to find the Emacs binary and add it to your PATH.
+     I don't know how to do this with Homebrew, but for the installer I linked above, there are instructions [[http://emacsformacosx.com/tips][here]].
+**** Windows
+      Emacs is surprisingly well supported on Windows - way better than vim is.
+      Check out [[http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/index.html][this FAQ on Emacs for Windows]], or just go [[http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Downloading.html#Downloading][directly to the download]].
+*** Emacs in GUI mode
+    It's better to use GUI Emacs rather than terminal Emacs.
+    GUI Emacs comes with buttons! 
+    And you can use your mouse!
+    And it's prettier!
+    And even for people who never use the mouse (like me) it is better than terminal Emacs.
+
+    But if you must use Emacs in the terminal, 
+    read my article on the various quirks and limitations of the terminal environment: 
+    http://catern.com/posts/terminal_quirks.html
+    (If you wonder why using GUI Emacs is better than terminal Emacs for keyboard users, that article explains why.)
+*** Emacs as a daemon
+    Emacs can run as a daemon, a process running in the background without necessarily displaying any graphical or terminal interface.
+    You can start the Emacs daemon by running the following command in your shell:
+#+begin_src sh
+emacs --daemon
+#+end_src
+
+    Running =M-x server-start= inside an already running Emacs will also let you experiment with the =emacsclient= command described below,
+    but the Emacs daemon (also known as the Emacs server) will exit when you close the original Emacs.
+    If you start it from the command line, it will stay running even if you don't have Emacs open.
+    
+    Why is this helpful?
+    Well, if you came to a previous talk about tmux, this is useful for some of the same reasons.
+    If you have some set of files open or some valuable data entered but not saved,
+    both =emacs --daemon= and =tmux= will keep that safe even if you disconnect.
+
+    The difference is, =emacs --daemon= is *automatic*.
+    Once you run it, if you switch to using =emacsclient -c=,
+    everything you do inside Emacs will automatically become immune to disconnections or you closing your terminal.
+    You don't have to start new windows inside =tmux= to perform new tasks; you just use Emacs as normal.
+    
+    And there are other advantages that are unique to =emacs --daemon=.
+    For one, you can freely switch between terminal Emacs and graphical Emacs, sharing all your open buffers.
+    
+    Another power that's unique to =emacs --daemon= is its smart behavior when you have multiple terminals open.
+    Say you log in from one place and open a file, and perform some edits.
+    You leave that login running; maybe you just forget that that terminal is open.
+    Now you login from a new terminal, and you want to open the same file to get some work done.
+    But if you opened it twice and edited it twice, you might cause conflicts and great pain for yourself!
+
+    In lesser editors, this means you're out of luck.
+    A lesser editor can tell that another instance of itself is editing the file, but that's all it can do,
+    so it will be cautious and refuse to open the file twice - you'll have to hunt down your original login and use that one.
+
+    But if you're running =emacsclient -c= to open that file, then the best possible thing that could happen, does happen:
+    Emacs opens normally, and the buffer for that file is shared between the two open Emacs frames;
+    any of your existing edits show up in the new Emacs.[fn:whyiswitched]
+
+    In fact, you can use this buffer-sharing capability of Emacs for collaborative editing!
+    I quite frequently collborate with colleagues by having us both connect to a shared Emacs daemon,
+    and edit the same buffer at the same time.
+    
+    I'm of the opinion that every application should have this amazing functionality.
+    Sadly, only Emacs is advanced enough to have it.
+    Maybe someday the rest of the world will catch up.
+*** The Ctrl key
+    It's very useful to remap CapsLock to Ctrl.
+    CapsLock is a useless key, and Ctrl is a very useful one, 
+    so it's good to make Control easier to hit while touch typing.
+    You can follow this guide: http://emacswiki.org/emacs/MovingTheCtrlKey
+    (This is of course still helpful even if you don't use Emacs.)
+** TODO Starter kits
+
+   https://github.com/technomancy/emacs-starter-kit
+
+* Philosophy
+** Terminals suck
+   Terminals suck, vim and emacs are both crippled by what they have to do to support running in a terminal.
+   But Emacs is substantially *less* crippled. :)
+** Anti-configuration
+   Why should you need to configure things just to fix broken defaults?
+   If a configuration is nearly universally agreed to be good, *it should be the default*.
+** Plan 9, Unix
+   People say Emacs is counter to the Unix philosophy.
+   Nothing could be further from the truth.
+   Consider the epitome of the Unix philosophy: the Plan 9 operating system.
+   Plan 9 was a text-driven system, with powerful primitives for composing programs.
+   And what was the primary interface to this operating system?
+   The editor, acme!
+   The best interface to a system that is primarily composed of text,
+   is the text editor,
+   both in Plan 9 and in Unix.
+   (Unfortunately, acme is not portable to non-Plan 9 systems.)
+   
+   All but one of your applications can be non-interactive, 
+   simply taking in text and spitting it back out, 
+   possibly with some side effects.
+   Then, orchestrating and controlling the other programs,
+   conducting this dance of development,
+   is the text editor.
+   If everything is communicating with text,
+   then the natural place for you to do interactive things is inside the text editor.
+** The mouse is not evil
+   Frequently it is suggested that the mouse is evil and you should avoid it 5ever!!
+** Terminals suck - so how to replace them?
+   Don't just make a "modern terminal" with fancy features.
+   You'll just need to support all the old crap of historical terminals.
+   You can *so easily* escape the terminal: just run shells inside Emacs.
+   But, even if you don't like that, you don't need to make a terminal to get a new version of the command line.
+   Jettison all those awful interactive programs, and you will be free;
+   you can write whatever you want without terminal compatibility.
+   Yes, this includes tmux.
+
+   Programs should not need terminfo. 
+   That is a harmful mixing of concerns.
+   Formatting on the screen should be dealt with at the formatting-on-the-screen level.
+   Really ideally the replacement would be fucking Atom... too bad it's slow as SHIT.
 * Learning and Documentation
-** Emacs tutorial: C-h t
-   Tell them in advance to do this with "emacs -f help-with-tutorial"
+  The Emacs help system is the best help system of any application ever.
+** Emacs tutorial: =C-h t=
+   I hope you already did this at this point.
+   If you didn't, remember that you can enter the tutorial on the command line by running =emacs -f help-with-tutorial=, 
+   or inside Emacs by pressing =C-h t=.
 
-   Even more helpful than the vim tutorial.
-   Do it even if you use evil-mode - just press C-z first to enter the Emacs state.
-** C-h
-   The beautiful, amazing help command
-   - C-h k
-     Type a keybinding to get what it does
-   - C-h f
-     Put your cursor on a function name, or just type one, to get its docs
-   - C-h v
-     Put your cursor on a variable, or just type one, to get its docs
-   - C-h m
-     Get info about the keybindings of the current major mode
-     (for evil-mode, many things will be listed as shadowed)
-** Manuals in M-x info
-   The Emacs manual is seriously useful.
-   Legitimately, seriously, look there first when you want to do something.
-   It is the best documentation I have ever seen.
-   And, conveniently, it's all available from inside Emacs!
+   The Emacs tutorial is quite a bit more helpful than the built-in tutorial of a certain lesser editor.
+   The Emacs tutorial is much more comprehensive,
+   and it is automatically adjusted to your currently active configuration.
+   So, even if you are using cua-mode or evil-mode, the Emacs tutorial is still very helpful, since it tells you when certain keybindings don't work.
+   (Of course, you could also leave those modes temporarily, 
+   with =M-x cua-mode= or =M-x evil-local-mode=, respectively, 
+   and then all the default keybindings will work.)
+** describe-*
+   Pressing =C-h= then another key will activate various parts of the help system.
+   In particular, many of these bindings will activate "describe" commands, which... describe things.
+   Of course, these can also be run with =M-x describe-whatever=.
+   For example, =M-x describe-key=.
+   Below is a small selection of some useful describe keybindings.
+   (Links shown by describe commands are underlined, and can be followed by clicking on the link, or by moving point to the link and pressing Enter)
 
-   Open info: =M-x info= or =C-h i=
-   Open the info tutorial (the help on how to use the help!): =M-x Info-help=
-   Open manual section about keybinding: =C-h K=
+*** =C-h k=
+    Runs =describe-key=.
+    Prompts for you to press some keybinding.
+    Press any keybinding to see 
+    - the function it is bound to,
+    - other keybindings bound to the same function,
+    - the documentation for that function,
+    - and a link to the (editable[fn:editable]) source code implementing the function.
+*** =C-h c=
+    Runs =describe-key-briefly=.
+    Prompts for you to press some keybinding.
+    Press any keybinding to see 
+    - the function it is bound to,
+    displayed briefly in the minibuffer.
+*** =C-h m=
+    Runs =describe-mode=.
+    This will show the documentation for all modes enabled in the current buffer, 
+    indexed by a list of links at the top.
+    The major mode comes first, then the minor modes in alphabetical order.
+    The names of functions are links which will run =describe-function=.
+*** =C-h b=
+    Runs =describe-bindings=.
+    This will show a full list of active bindings,
+    marked either 
+    - as key translations (see the manual, not relevant to most people),
+    - as global bindings, 
+    - or by the mode creating those bindings.
+    The names of functions are links which will run =describe-function=.
+    You should generally prefer =C-h m= as it actually contains documentation,
+    but it doesn't list literally all bindings, and this does.
+*** =C-h f=
+    Runs =describe-function=.
+    Prompts for you to type in the name of a Lisp function (such as =describe-function=). 
+    Defaults to the function name at point, if point is on the name of a function.
+    Then shows 
+    - any keybindings bound to that function,
+    - the documentation for that function,
+    - and a link to the (editable[fn:editable]) source code implementing the function.
+    Quite useful while writing Elisp to configure Emacs.
+*** =C-h v=
+    Runs =describe-variable=.
+    Prompts for you to type in the name of a Lisp variable (such as =package-archives=). 
+    Defaults to the variable name at point, if point is on the name of a variable.
+    Then shows 
+    - the current value for that variable,
+    - the original value for that variable, if different,
+    - the documentation for that variable,
+    - a link to the (editable[fn:editable]) source code initially defining the variable,
+    - and a link to the Customization interface for that variable, if one exists.
+    Quite useful while writing Elisp to configure Emacs.
+*** =C-h K=
+    Try =C-h K C-h K=, and =C-h K C-h F=, then move on to the next section. :)
+** Acesssing the Emacs Manual
+   The Emacs manual is, unsurprisingly, very good.
+   And, conveniently, it's all available from inside Emacs, in "info" format!
+   The info format is a superior alternative to "man" pages;
+   it's a form of hypertext that predates, and significantly influenced, HTML.
+   You can read any info pages on your system from inside Emacs. 
+   (You can also read manpages with =M-x man= or =M-x woman=)
+   Sadly, info usage is rare these days. 
+   I blame close-minded =vi= users.
+
+*** Open the manual: =C-h i= or =M-x info=
+    This will send you to the =*info*= buffer, in the "info-mode" major mode,
+    which defaults to showing the info "directory node", which lists all the info manuals present on your system.
+
+    You may want to open the "Emacs" manual.
+    In the directory node, it's in the "Emacs" section;
+    you can open it by scrolling down and clicking on it, 
+    or by moving point over it and pressing Enter.
+    Or you can follow the instructions at the top of the buffer (if you're in the directory node).
+
+    If you're not in the directory node, you can get back there by pressing "d".
+
+    (You can also use =C-h r= to go directly to the Emacs manual.)
+
+    You can open the info tutorial by pressing =h= when already inside info, or =M-x Info-help=.
+    It explains some concepts of info, and how to navigate it.
+    Or you might just want to use =C-h m= while in the info buffer to get a less laborious overview.
+    
+    
+*** =C-h K=
+    Go to the section of the manual for the entered keybinding;
+    helpful to find other similar keybindings.
 *** Exercise: Navigate to the Help section of the Emacs manual
     =C-h K C-h C-h=
     
     (That is, use =C-h K= to open the manual section about the following keybinding =C-h C-h=)
 
-    This is a great section of the manual.
+    This is a great section of the manual, I like it a lot.
 *** Greatest hits
     Some manuals that are full of cool stuff!
-    Emacs
-    Emacs FAQ
-    Elisp
-    Eshell
-*** Manuals on Debian
-    Debian considers Emacs docs to be non-free, so you'll have to install the docs separately, with the package =emacs24-common-non-dfsg=.
-    (This is very ironic, yes).
-** If you are surprised
-   This is a useful feature (explained here by a quote from the manual):
+
+    - Emacs
+    - Emacs FAQ
+    - Elisp
+    - Eshell
+*** Note for Debian users
+    Debian considers the Emacs manual to be non-free, so it's packaged separately from Emacs.
+    You can install the Emacs manual by enabling the non-free repository and installing the package =emacs24-common-non-dfsg=.
+    Yes, this is extremely ironic, considering who developed Emacs...
+** Figure out WTF just happened
+   Lossage is a useful feature (explained here by a quote from the Help section of the manual):
 #+begin_quote
 If something surprising happens, and you are not sure what you typed,
 use ‘C-h l’ (‘view-lossage’).  ‘C-h l’ displays your last 300 input
 keystrokes.  If you see commands that you don’t know, you can use ‘C-h
 c’ to find out what they do.
 #+end_quote
-** Menu bar
-   The menus are pretty handy.
+   
+   But you can do one better! Try hitting =C-x C-k l= instead! (And navigate to the end)
+** GUI features
+   The menus are pretty handy. 
    They change with what modes are active, providing access to useful functionality for the current mode.
    Use them!
    Even experienced Emacs users make use of them when exploring new modes and functionality.
 
-   If you're not in GUI mode, you can use =<F10>= or =M-x menu-bar-open= to open the menu bar.
-   (=<F10>= might be intercepted by your terminal, 
-   but if you turn off the menu bar in, for example, GNOME Terminal, you can still use it)
-** Useful web resources
-   - http://emacsrocks.com/
-   - http://www.masteringemacs.org/reading-guide/
-     
+   If you're not in GUI mode, you can use =M-x menu-bar-open= or =<F10>= (in Emacs 24.4 or with the init.el I provide) to open the menu bar.
+   Note that =<F10>= might be intercepted by your terminal,
+   but if you turn off the menu bar in, for example, GNOME Terminal, you can still use it.
+   
+   Likewise, the tool bar (with buttons on it) sometimes is useful as it sometimes changes with the mode.
+
+   And there are tool-tips when you hover the mouse over the modeline or other buttons.
+** TODO Useful online resources
+*** See cool features
+   - [[http://emacsrocks.com/][Emacs Rocks]]
+   - [[http://www.masteringemacs.org/reading-guide/][Mastering Emacs]]
+*** Get questions answered
+   - CMU Computer Club
+   - Google
+   - [[http://webchat.freenode.net?channels%3D%2523emacs][#emacs on Freenode]]
+   - [[https://emacs.stackexchange.com][Emacs Stack Exchange]]
+* Basic programming workflow
+** Use C-s and C-r to get around
+   This is a very Emacsy way of getting around.
+
+   1. Press C-s (or C-r, doesn't matter)
+   2. Type a part of the thing you are trying to move point to. Don't press Enter.
+   3. Press C-s and C-r to move between matches until you get where you want to go.
+   4. Possibly type more between presses, to narrow down the matches.
+      
+   Note that this is intelligently case-sensitive.
+   It matches any case if you have only lower-case letters in your search string,
+   but if you include an upper-case letter it switches to requiring exact case.
+** TODO Find and replace
+   =M-%=
+   =M-x replace-string= will prompt for two strings, and replace any occurence of the first with the latter.
+   There are more advanced find and replace commands;
+   read the section of the manual for =replace-string= with =C-h F= to find out.
+** Maybe a programming workflow? If python, show M-x run-python. If C, show M-x compile.
+** scpaste
+** TeX input method
+   This is just kind of cool.
+** Magit
+   You probably won't need git quite yet, 
+** M-g M-n/p
+   Oh, better yet, M-g n/p!
+** auto-insert-mode
+** Calc tutorial: =C-x * t=
+** Universal argument
+   C-u for positive argument
+   C-- for negative argument
+   (Alternatively, M-1 and M- or any M-numbers to enter specific counts)
+   M-2, M-3 for example are helpful to navigate around window splits quickly.
+** Mark and point and region
+   Emacs has an interestingly flexible way to specify regions of text.
+   There is a position in the buffer called "mark" which is moved around by certain actions (like searching),
+   or set manually with C-SPC.
+   asdf    For each bit
+
+   C-SPC I love otter M-w M-29 C-y
+   Highlighting text is really just highlight
+   More than just highlighting, selenicely flexible  
+** editable occur
+   =M-x occur=
+   =M-x occur-edit-mode=
 * More usage
 ** TODO Macros
    recording
@@ -260,3 +570,18 @@ c’ to find out what they do.
    Vim on the other hand... well... it has its own built-in C reimplementation of spell-checking and encryption.
    Emacs just uses aspell and PGP.
    And we all know the troubles vim has with asynchronicity and integrating external programs.
+
+* Footnotes
+
+[fn:whyiswitched]
+  This is actually why I switched to Emacs myself initially.
+  I used to be a master user of vim, and I ran into this problem all the time.
+  It was so annoying!
+  I tried out Emacs and instantly this problem was solved, along with many other problems I had forgotten I even had.
+  I never looked back. (except to pity those who haven't yet switched)
+
+[fn:editable] 
+  Of course you would need to re-evaluate the file
+  to change the definition of the functions and variables contained within.
+  But you can indeed do that trivially at run-time... 
+  though I won't say how, in this footnote, since you might mess things up!!!

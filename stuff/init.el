@@ -4,6 +4,7 @@
 ;; documentation for that function or variable (respsectively).
 
 ;;;; The next section installs my desired Emacs packages if not already present
+;; (This is mainly a useful demonstration of some Emacs Lisp)
 ;; Start the package system by running the "package-initialize" function with no arguments
 (package-initialize)
 
@@ -16,10 +17,13 @@
 	;; written outside a list like this: 'better-defaults.
 	;; (You can think of them like strings)
 	better-defaults
-	undo-tree
 	cyberpunk-theme 
+	undo-tree
+	c0-mode
 	auctex
-	magit))
+	magit
+	ix
+	))
 
 
 ;; Set the package-archives variable to a list of pairs describing the
@@ -57,6 +61,8 @@
 ;; after init.el, since we already ran it. This is just a small
 ;; startup time optimization.
 (setq package-enable-at-startup nil)
+
+;;;; End of section installing packages
 
 ;;;; Visuals
 ;; Enable cyberpunk theme! HACK THE PLANET
