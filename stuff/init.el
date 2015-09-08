@@ -77,13 +77,14 @@
 
 ;;;; Undo better-defaults changes
 ;; Re-enable the menu-bar, tool-bar, and scroll-bar, disabled by better-defaults
-;; If you grow to not like them, just remove these lines
+;; If you don't like those GUI elements, just remove these lines
 (menu-bar-mode 1)
 (tool-bar-mode 1)
 (scroll-bar-mode 1)
 
-;;;; undo-tree is great, let's enable it
-;; Remember, you can do C-h m to see descriptions for all active
-;; modes; scroll to the undo-tree information to see what it adds
+;;;; undo-tree-mode is great, let's enable this minor mode for all buffers
+;; Remember, you can do C-h m to see descriptions for all active modes
+;; in the active buffer; scroll to the undo-tree information to see
+;; what it adds
 ;; undo-tree-visualize is great!
 (global-undo-tree-mode)

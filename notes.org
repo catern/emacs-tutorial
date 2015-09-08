@@ -1,21 +1,33 @@
 #+TITLE: Power Emacs
-# Fun idea - typing in name while holding down Ctrl
-# What you learn this day will forever serve as your firm foundation in the arts of Emacs, no matter who your teachers before and after.
-# Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link! This will win hard!
-# Write the C-y for redo thing already!!
-# !!!! Configure c0 support! And also SML?
-# GUI mode in OS X has CMD-v shortcuts etc. enabled
-# Achievements?
-# Games?
+* TODO Scraps
+** Fun ideas
+   Note: I can easily come up with fun ideas for the elisp hacking part, it's the documentation and terminology part that is more difficult.
+*** Typing in name while holding down Ctrl
+    Then use lossage to see it
+    Then use C-h k to see what the first few do
+    Then use kmacro-edit-lossage to see what it all does.
+*** Games?
+    Just play games?
+** Other stuff
+Add C-y for redo in cua-mode... except cua-mode isn't really necessary anyway...
+GUI mode in OS X has CMD-v shortcuts etc. enabled
+Counter-CUA:GUI on OS X is already using Mac-CUA, GUI on Windows won't work remotely since no SSH, so people will need to learn anyway.
+So: On OS X and Linux, you should install the GUI. On Linux, you might want to use cua-mode I suppose.
+On Windows, the GUI won't work remotely because no ssh, so try X forwarding Emacs instead I guess if you want to use cua.
+
+So since OS X has no need for cua-mode, and Windows won't work graphically and CUA doesn't work as well non-graphically...
+I guess I'll just mention cua-mode rather than enable it.
+** Consider tabbar-mode
+   It is pretty slick and people might find it familiar.
 * Salespitch
-  One may speak great praise to vim,
+  One can praise vim all they want,
   but even the fiercest proponent must admit:
-  vim's claims to greatness are in no way uncontroversial.
-  I should know, I used vim for years, and I'm pretty much an expert. 
-  Besides its interesting keybindings, it doesn't have any real claims to superiority.
+  vim's claims to greatness are controversial.
+  I should know, I used vim for years, and I've become an expert.
+  Besides its interesting keybindings, it doesn't have a clear case for superiority.
   
   On the other hand, 
-  there is an application that, in several dimensions, is uncontroversially the world's best.
+  there is an program that, in several ways, is uncontroversially the world's best.
   It has the best help system of any application ever.
   It is the best portable environment for Lisp hacking.
   It is the world's most live-hackable and extensible system.
@@ -25,8 +37,15 @@
   and if you're interested,
   come to my workshop,
   and you can learn the more controversial truth:
-  It is the world's best text editor.
-* Getting started
+  It is also the world's best text editor.
+* TODO Introduction
+  What you learn this day will forever serve as your firm foundation in the arts of Emacs, 
+  no matter who your teachers before and after.
+  
+  I will teach you how to act on your own in Emacs.
+  You will not need to be dependent on gurus or wisemen or shamans,
+  but will be able to harness Emacs purely through your own fingers and strength of will.
+* TODO Getting started
   Some preliminary knowledge to make things work nicely.
 ** =Ctrl-g=
    This is your universal panic key.
@@ -51,7 +70,10 @@ emacs -f help-with-tutorial
    is one of the best manuals ever written)
 
 *** Keybinding notation
-    Emacs uses a shortened notation for denoting keyboard commands.
+    A "keybinding" is some keyboard input bound to perform some command.
+    For example, =C-a= goes to the beginning of the line.
+    Emacs uses a specialized notation for denoting keyboard commands.
+
     - =C-h= for Ctrl-h.
       That is, hold down the Control key, press h, then release the Control key.
     - =M-f= for Alt-f.
@@ -62,6 +84,13 @@ emacs -f help-with-tutorial
     - =RET= for Return/Enter
     - =SPC= for Space
     - =DEL= for Backspace
+      
+    A chain of keys pressed in sequence to have a single effect, like =C-x C-s=, is known as a "key chord".
+    Often "key chord" is also used to refer to a single keypress, like =C-a=.
+    Note that a keybinding in Emacs is simply a mapping from a keychord of one or more keys,
+    to some named function (as in "function call") written in the programming language underlying Emacs.
+    For example, =C-a= maps to =beginning-of-line=.
+    Later, in the documentation section, you'll learn a number of ways to reveal this mapping.
 *** Buffers
     When you open a file, its text appears in a buffer, and you can edit it.
     Each buffer has a name, which is usually the name of the file.
@@ -206,52 +235,48 @@ emacs --daemon
     so it's good to make Control easier to hit while touch typing.
     You can follow this guide: http://emacswiki.org/emacs/MovingTheCtrlKey
     (This is of course still helpful even if you don't use Emacs.)
-** TODO Starter kits
+** TODO Bare essentials of configuration
+   Later in this document I will explain configuration in detail,
+   after the sections on documentation and basic usage.
+   But to set the foundations for that section,
+   it would be useful for you to have a simple configuration already in place.
+   And if I'm going to give you a simple configuration anyway,
+   you might as well get the advantage of using it through the documentation and usage sections as well.
 
-   https://github.com/technomancy/emacs-starter-kit
-
-* Philosophy
-** Terminals suck
-   Terminals suck, vim and emacs are both crippled by what they have to do to support running in a terminal.
-   But Emacs is substantially *less* crippled. :)
-** Anti-configuration
-   Why should you need to configure things just to fix broken defaults?
-   If a configuration is nearly universally agreed to be good, *it should be the default*.
-** Plan 9, Unix
-   People say Emacs is counter to the Unix philosophy.
-   Nothing could be further from the truth.
-   Consider the epitome of the Unix philosophy: the Plan 9 operating system.
-   Plan 9 was a text-driven system, with powerful primitives for composing programs.
-   And what was the primary interface to this operating system?
-   The editor, acme!
-   The best interface to a system that is primarily composed of text,
-   is the text editor,
-   both in Plan 9 and in Unix.
-   (Unfortunately, acme is not portable to non-Plan 9 systems.)
+   I hate to tell you to do something without explaining it, but that's useful in this case.
+   So, for the only time in this document, please follow these instructions blindly to put the simple example configuration in place.
    
-   All but one of your applications can be non-interactive, 
-   simply taking in text and spitting it back out, 
-   possibly with some side effects.
-   Then, orchestrating and controlling the other programs,
-   conducting this dance of development,
-   is the text editor.
-   If everything is communicating with text,
-   then the natural place for you to do interactive things is inside the text editor.
-** The mouse is not evil
-   Frequently it is suggested that the mouse is evil and you should avoid it 5ever!!
-** Terminals suck - so how to replace them?
-   Don't just make a "modern terminal" with fancy features.
-   You'll just need to support all the old crap of historical terminals.
-   You can *so easily* escape the terminal: just run shells inside Emacs.
-   But, even if you don't like that, you don't need to make a terminal to get a new version of the command line.
-   Jettison all those awful interactive programs, and you will be free;
-   you can write whatever you want without terminal compatibility.
-   Yes, this includes tmux.
+   If you will use Emacs both remotely and on your local computer,
+   pick the appropriate two branches.
+   (Note that all these branches give you the exact same configuration.)
 
-   Programs should not need terminfo. 
-   That is a harmful mixing of concerns.
-   Formatting on the screen should be dealt with at the formatting-on-the-screen level.
-   Really ideally the replacement would be fucking Atom... too bad it's slow as SHIT.
+*** Emacs installed on =unix.andrew.cmu.edu= (or any remote Linux machine)
+    Open a new terminal. Log in to the remote server in question as normal. 
+    Copy and paste the following:
+
+*** Emacs installed on your local Linux/OS X machine
+
+#+begin_src sh
+mkdir -p ~/.emacs.d/ && curl 
+#+end_src
+
+*** Emacs installed on your local Windows machine
+    Open Emacs and type the following (if you don't understand what =C-x C-f= is, go up to the Terminology section):
+
+#+begin_example
+C-x C-f ~/.emacs.d/init.el 
+#+end_example
+   
+    Open your browser and go to this URL:
+    Copy the text at that URL. 
+
+    Go back to Emacs and paste that text in. 
+    (If you did the tutorial, you know how to paste, but otherwise just use the toolbar paste button or the  and paste it and and type exactly what follows:
+    
+    Now type:
+#+begin_example
+C-x C-s
+#+end_example
 * Learning and Documentation
   The Emacs help system is the best help system of any application ever.
 ** Emacs tutorial: =C-h t=
@@ -282,6 +307,9 @@ emacs --daemon
     - other keybindings bound to the same function,
     - the documentation for that function,
     - and a link to the (editable[fn:editable]) source code implementing the function.
+
+    Note that a keybinding in Emacs is simply a mapping from a sequence of one or more keys,
+    to some named function (as in "function call") written in the programming language underlying Emacs.
 *** =C-h c=
     Runs =describe-key-briefly=.
     Prompts for you to press some keybinding.
@@ -398,42 +426,54 @@ c’ to find out what they do.
    Likewise, the tool bar (with buttons on it) sometimes is useful as it sometimes changes with the mode.
 
    And there are tool-tips when you hover the mouse over the modeline or other buttons.
-** TODO Useful online resources
+** Useful online resources
 *** See cool features
    - [[http://emacsrocks.com/][Emacs Rocks]]
    - [[http://www.masteringemacs.org/reading-guide/][Mastering Emacs]]
 *** Get questions answered
-   - CMU Computer Club
-   - Google
+   - Ask me, I'm happy to help, just send me poorly-formatted email
+   - CMU Computer Club (the President of the club knows a *lot* about Emacs)
    - [[http://webchat.freenode.net?channels%3D%2523emacs][#emacs on Freenode]]
    - [[https://emacs.stackexchange.com][Emacs Stack Exchange]]
-* Basic programming workflow
-** Use C-s and C-r to get around
+   - Google
+* TODO Basic programming workflow
+** undo and redo and undo-tree-visualize
+   The tutorial doesn't mention how to redo...
+   I guess I should mention it, and also undo-tree-visualize.
+** quoted-insert
+   To insert a literal character, use =C-q=.
+** Use =C-s= and =C-r= to get around
    This is a very Emacsy way of getting around.
 
-   1. Press C-s (or C-r, doesn't matter)
+   1. Press =C-s= (or =C-r=, doesn't matter)
    2. Type a part of the thing you are trying to move point to. Don't press Enter.
-   3. Press C-s and C-r to move between matches until you get where you want to go.
+   3. Press =C-s= and =C-r= to move between matches until you get where you want to go.
    4. Possibly type more between presses, to narrow down the matches.
       
    Note that this is intelligently case-sensitive.
    It matches any case if you have only lower-case letters in your search string,
    but if you include an upper-case letter it switches to requiring exact case.
-** TODO Find and replace
+** Find and replace
    =M-%=
+
    =M-x replace-string= will prompt for two strings, and replace any occurence of the first with the latter.
    There are more advanced find and replace commands;
    read the section of the manual for =replace-string= with =C-h F= to find out.
 ** Maybe a programming workflow? If python, show M-x run-python. If C, show M-x compile.
-** scpaste
+   Maybe even basic customization, adding a keybinding for M-x recompile?
+** ix
+   Pasting to ix.io
+
+   Would be nice if I could get scpaste working...
+
+   Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link!
+   That could be awesome!
+   Too bad scpaste is broken and the link gets flushed out of the minibuffer instantly...
 ** TeX input method
    This is just kind of cool.
-** Magit
-   You probably won't need git quite yet, 
 ** M-g M-n/p
    Oh, better yet, M-g n/p!
 ** auto-insert-mode
-** Calc tutorial: =C-x * t=
 ** Universal argument
    C-u for positive argument
    C-- for negative argument
@@ -443,35 +483,17 @@ c’ to find out what they do.
    Emacs has an interestingly flexible way to specify regions of text.
    There is a position in the buffer called "mark" which is moved around by certain actions (like searching),
    or set manually with C-SPC.
-   asdf    For each bit
-
-   C-SPC I love otter M-w M-29 C-y
-   Highlighting text is really just highlight
+   Highlighting text is really just highlighting the region between mark and point.
    More than just highlighting, selenicely flexible  
 ** editable occur
-   =M-x occur=
+   =M-x occur=,
    =M-x occur-edit-mode=
-* More usage
-** TODO Macros
+   
+** Macros
    recording
    editing macros
 ** kill ring
-* Customization
-** basic init.el (workshop)
-   If you don't already have an init.el,
-#+BEGIN_SRC sh
-   wget http://www.cmucc.org/fall14/init.el -O ~/.emacs.d/init.el
-#+END_SRC
-   If you do have an init.el, download it anyway and compare.
-   There's some useful stuff.
-   If you want to use evil-mode (and you don't already have an init.el),
-#+BEGIN_SRC sh
-   wget http://www.cmucc.org/fall14/init-vim.el -O ~/.emacs.d/init.el
-#+END_SRC
-** Bootstrapping config
-   The first few lines of this config install the packages you'll need in addition to stock Emacs.
-   Emacs ships with a package management system, so this is trivial.
-* Packages and functionality
+   =yank-pop=
 ** TRAMP
    TRAMP stands for "Transparent Remote Access, Multiple Protocols".
    It basically integrates ssh 
@@ -482,7 +504,6 @@ c’ to find out what they do.
    which I'm writing in Emacs using [[https://addons.mozilla.org/en-US/firefox/addon/its-all-text/][It's All Text]].
    I'm on my laptop, and I wanted to get to some notes on my desktop, earth.
    So, I just did C-x C-f /ssh:earth:/home/sbaugh/myemacsnotes and I had the notes open in a buffer. 
-   (for evil-mode users, :e instead of C-x C-f)
    This all tab-completed of course; 
    Emacs knows the host "earth" that I defined in my .ssh/config, 
    and it opened the connection as soon as I hit tab for the first time after typing the "/ssh:mydesktop:/" component,
@@ -492,25 +513,181 @@ c’ to find out what they do.
    pretty much everything.
    For serious shell work I still ssh to hosts directly, of course.
    But for just many tasks, it's very handy to be able to directly edit a file that lives on a remote host and still use my local Emacs configuration.
+* Configuration
+  Lesser programs are configured by clicking settings in a box, setting flags in some key-value store.
+  If you're really lucky, they might store their configuration data in some editable plain text format, like INI or JSON.
+
+  Not so, for Emacs.
+  Emacs knows the truth of Lisp: code is data.
+
+#+begin_verse
+    When old age shall this generation waste,
+    Thou shalt remain, in midst of other woe
+    Than ours, a friend to man, to whom thou say'st,
+    "Code is data, data code,—that is all
+    Ye know on earth, and all ye need to know."
+    -- Excerpt from Keats, "Code on a Grecian Urn" (about Lisp)
+#+end_verse
+  
+  Emacs is configured in the same programming language it is written in: Lisp.
+  Specifically, Emacs is written in "Emacs Lisp", also called "Elisp", one of the many variants of Lisp.
+  Lisp is a functional programming language that has had an immense influence on the history of computing.
+
+  All variables inside Emacs can be freely customized and manipulated by the end-user.
+  Many are exposed specifically for the purpose of configuration.
+  These are literal variables that are checked or otherwise used by various internal or external functions.
+  The mapping of keychords to functions? Just another variable (a list, in fact).
+  These are like settings in other editors, but are, obviously, substantially more flexible.
+
+  So how does one manipulate these variables, and, in general, change the behavior of Emacs?
+  There are two options,
+  both of which can generate Emacs Lisp that your Emacs runs at startup,
+  which permanently changes the nature of your Emacs.
+
+** =M-x customize=
+  There is an "easy" interactive interface for configuration known as =customize=.
+  It can be accessed through =M-x customize=.
+  It lists, in a friendly interactive way, all the variables that have been registered and documented as "customizable".
+  And, of course, it allows you to set those variables in a straightforward way,
+  and persist your changes so that they take effect both in your current Emacs session and all future sessions.
+  This is a nice way to leisurely explore what settings are available, though it can become overwhelming.
+  
+  Keep in mind that =M-x customize= is not in any way weaker than writing Emacs Lisp directly.
+  If you direct =M-x customize= to persist your changes,
+  it in fact just generates and inserts code into a special section of your =init.el=,
+  which is run when Emacs starts.
+  You'll read more about =init.el= in the next section.
+** =C-x C-f ~/.emacs.d/init.el=
+  The other option for manipulating the functionality of Emacs is writing Emacs Lisp code.
+  Emacs will automatically run any Elisp it finds in =~/.emacs.d/init.el= on startup.
+  It will also run =~/.emacs= if it is present, but =init.el= is preferred these days. 
+  The =.d= in =.emacs.d= is for directory; appending a =.d= to the name of a directory is a common practice in Unix.
+  
+  Most people just set variables in their =init.el=,
+  but Elisp is a full-fledged, general-purpose programming language, like Lisp in general.
+  The Elisp in your =init.el= can of course load other files containing Elisp and execute them in turn;
+  entire elaborate programs can be constructed for Emacs to run on startup.
+  If you take a look at the example =init.el= I provided you in the "Getting Started" section,
+  you'll see that I made good use of the general-purpose nature of Elisp.
+  To bootstrap your Emacs setup,
+  I defined a list of quality Emacs Lisp packages available on the internet,
+  and looped through it,
+  checking whether each package was installed and installing it if it was not.
+  A trivial task in a general-purpose language like Elisp,
+  but very difficult or impossible for other applications.
+  
+  You'll learn more about programming in Elisp in the "Programming in Elisp" section.
+** Emacs packages/plugins/extensions
+   There's actually three options for configuring Emacs;
+   the last one just isn't generally thought of as configuration.
+   You can install Emacs Lisp packages that other people have made.
+   
+   If you do =M-x list-packages=, you can see the list of available packages.
+   Your Emacs might hang for a moment as it downloads package metadata from the internet;
+   to avoid that hang you could use =M-x package-list-packages-no-fetch=.
+   The list is drawn from the repositories configured in the =package-archives= variable.
+   As usual, you can press =C-h m= to get major-mode documentation.
+   
+   There are lots of exciting packages here!
+   But show some restraint, don't just install them all.
+   
+   When you install a package, it is downloaded to =~/.emacs.d/elpa=,
+   and Emacs scans the package for code marked "autoload".
+   Code marked "autoload" will be automatically loaded when Emacs starts;
+   generally, just a few stub functions are autoloaded, 
+   and those functions chain-load the rest of the package when they are actually run by the user.
+   This is called "lazy loading"; it speeds startup time and reduces memory usage.
+   (Core Emacs is also lazy loaded.)
+   
+   Packages might be confused with "plugins" or "extensions" in lesser applications.
+   But packages are the core building block of Emacs;
+   since Emacs is programmed largely in Emacs Lisp,
+   most of its functionality is already divided into packages using the same format and interfaces of user packages.
+   So a package is really no different from any other component of Emacs.
+   You can see the core Emacs package in =M-x list-packages=, marked "built-in".
+** Starter kits
+   OK, maybe there's actually four options for configuring Emacs.
+   There are lots of starter kits out there that you can download,
+   which will do a lot of configuration for you,
+   and install a bunch of exciting Emacs Lisp packages all at once.
+   They are basically no different from the =init.el= that I provided you,
+   just much larger in scale.
+
+   Starter kits are generally seen as a [[https://github.com/technomancy/emacs-starter-kit][very bad idea]].
+  
+   However, after today's workshop, and by consulting my notes, 
+   I think you will know enough about Emacs to decide on your own whether to use a starter kit.
+   As long as you read that "very bad idea" link just above.
+   Note that the =init.el= that is provided alongside these notes is optimized to be both
+    - very short and understandable
+    - everything you need
+   In fact the =init.el= that I provided you is quite close to the one I actually use.
+   So I question whether more configuration is actually necessary...
+   But, if you want, you can try out some starter kits.
+   So here is a list of the "popular" ones:
+
+   - [[https://github.com/bbatsov/prelude][Prelude]] ("an Emacs distribution that aims to enhance the default Emacs experience")
+   - [[https://github.com/overtone/emacs-live][Emacs Live]] (Designed for live art/music coding with Clojure; the only one that I would actually consider using)
+   - [[https://github.com/syl20bnr/spacemacs/][Spacemacs]] (Uses the independently developed =evil-mode= package which emulates vim, then adds a lot more stuff on top
+     Has a pretty stupid [[https://en.wikipedia.org/wiki/Not_invented_here][NIH]] configuration system)
+* Useful popular Emacs packages
+  Before we get into actual programming, let's look at some useful packages that already exist,
+  available from the popular Emacs package repositories.
+  Here are the repos I use, which are also configured in the provided =init.el=.
+#+begin_src emacs-lisp
+(setq package-archives
+      '(;; GNU ELPA, the default package archive, with GNU packages
+	("gnu" . "http://elpa.gnu.org/packages/")
+	;; Marmalade, a real repository with many released packages
+	("marmalade" . "http://marmalade-repo.org/packages/")
+	;; MELPA, unstable packages scraped straight off of Github
+        ("melpa" . "http://melpa.milkbox.net/packages/")))
+#+end_src
+
 ** magit
-   A really great git interface, makes things convenient without abstraction.
-   - http://magit.github.io/
-   - http://www.masteringemacs.org/articles/2013/12/06/introduction-magit-emacs-mode-git/
-** evil-mode
-   - advantage: the find and replace is visual and incremental
-     :%s/rep..ce/replace
+   Preinstalled by the =init.el= I distributed.
+   Available in Marmalade or MELPA.
+
+   Probably the best git interface in existence, makes things convenient without abstraction.
+   Allows you to use Emacs and git together in some really super-powered ways. 
+   Try =M-x magit-blame=!
 ** undo-tree
-#+begin_src emacs-lisp
-(undo-tree-visualize)
-#+end_src
+   Preinstalled by the =init.el= I distributed.
+   Available in ELPA.
+   
+   This provides a nicer interface to the default Emacs undo system.
+   (By default, you only have "undo", and you're supposed to redo by... undoing your previous undos.)
+   The =init.el= I gave you turns it on globally.
+** calc
+   Comes with Emacs.
+
+   A... calculator? Inside Emacs? Why would I ever need thi-OH MY GOD IT CAN READ IN LATEX AND SOLVE LATEX EQUATIONS AND SPIT OUT LATEX OUTPUT THIS IS AMAZING.
+ 
+   It has a manual and tutorial which are pretty nice, check it out.
 ** org-mode
-   A very useful note-taking, planning and publishing mode.
-   http://orgmode.org/
-** dunnet
-#+begin_src emacs-lisp
-(dunnet)
-#+end_src
-* elisp and extension
+   Comes with Emacs.
+
+   A useful note-taking, planning, time-tracking, organizing, publishing mode. 
+
+   It is legendary and acclaimed by many, but a bit of a behemoth...
+   I haven't yet gotten into it that much.
+   
+   Check out the org-mode manual to learn more.
+** evil-mode
+   Available in third-party repos.
+   
+   Adds a bunch of keybindings to pretty fully emulate vim.
+   I use this myself.
+   With this package, Emacs is a better vim than vim is.
+** Games
+   A number of games come with Emacs.
+
+   Look at the Games section of the Emacs manual for a full list.
+*** =M-x tetris=
+*** =M-x snake=
+*** =M-x gomoku=
+*** =M-x dunnet=
+* Programming in Elisp
 ** Lisp basics
    http://learnxinyminutes.com/docs/elisp/
    (I really like that site)
@@ -524,7 +701,7 @@ c’ to find out what they do.
    (It's very famous)
 ** write a time-tracking extension (workshop)
    Use quantified self extension as an example of the ease of configuration
-* Practices that go well with Emacs
+* Other non-Emacs best practices
 ** keyboard based workflow
    Basically anything that enables a keyboard based workflow.
    By not moving your hands to the mouse or even to Home/End/etc, you can type and edit faster.
@@ -545,18 +722,52 @@ c’ to find out what they do.
 *** file manager
     Dired is already quite okay.
 *** editing elsewhere
-    OS X has some fancy thing where you can have emacs keybindings in
-    every text editing field.
-    I'd be jealous, if Emacs keybindings didn't suck.
-* Advanced
-** org-mode
-   You can pretty much do everything in org-mode, 
-   it's an extremely powerful organization and publishing system.
-   Look at the manual, it's great.
-   http://orgmode.org/manual/index.html
-** Clojure
-   Now that you're in Emacs, you can use Clojure SO WELL it's insane.
-   Emacs is made for Lisps, and Clojure is a modern, hip Lisp.
+    OS X has some fancy thing where you can have emacs keybindings in every text editing field.
+* TODO Philosophy
+  I need to move this out of this file...
+** Terminals suck
+   Terminals suck, vim and emacs are both crippled by what they have to do to support running in a terminal.
+   But Emacs is substantially *less* crippled. :)
+** Anti-configuration
+   Why should you need to configure things just to fix broken defaults?
+   If a configuration is nearly universally agreed to be good, *it should be the default*.
+** Plan 9, Unix
+   People say Emacs is counter to the Unix philosophy.
+   Nothing could be further from the truth.
+   Consider the epitome of the Unix philosophy: the Plan 9 operating system.
+   Plan 9 was a text-driven system, with powerful primitives for composing programs.
+   And what was the primary interface to this operating system?
+   The editor, acme!
+   The best interface to a system that is primarily composed of text,
+   is the text editor,
+   both in Plan 9 and in Unix.
+   (Unfortunately, acme is not portable to non-Plan 9 systems.)
+   
+   All but one of your applications can be non-interactive, 
+   simply taking in text and spitting it back out, 
+   possibly with some side effects.
+   Then, orchestrating and controlling the other programs,
+   conducting this dance of development,
+   is the text editor.
+   If everything is communicating with text,
+   then the natural place for you to do interactive things is inside the text editor.
+** The mouse is not evil
+   Frequently it is suggested that the mouse is evil and you should avoid it 5ever!!
+** Terminals suck - so how to replace them?
+   Don't just make a "modern terminal" with fancy features.
+   You'll just need to support all the old crap of historical terminals.
+   You can *so easily* escape the terminal: just run shells inside Emacs.
+   But, even if you don't like that, you don't need to make a terminal to get a new version of the command line.
+   Jettison all those awful interactive programs, and you will be free;
+   you can write whatever you want without terminal compatibility.
+   Yes, this includes tmux.
+
+   Programs should not need terminfo. 
+   That is a harmful mixing of concerns.
+   Formatting on the screen should be dealt with at the formatting-on-the-screen level.
+   Really ideally the replacement would be fucking Atom... too bad it's slow as SHIT.
+
+** vim sucks lmao
    UI primitives, 
    system integration, 
    and a few hot-spot functions that need maximum efficiency.
