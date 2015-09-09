@@ -1,9 +1,9 @@
 ;; Commenting in elisp is done with a single ";"
 ;; Remember, in Emacs, you can move your cursor to any Elisp function
 ;; or variable in this file, then press C-h f or C-h v to see the
-;; documentation for that function or variable (respsectively).
+;; documentation for that function or variable (respectively).
 
-;;;; The next section installs my desired Emacs packages if not already present
+;;;; The next section installs some desired Emacs packages if not already present
 ;; (This is mainly a useful demonstration of some Emacs Lisp)
 ;; Start the package system by running the "package-initialize" function with no arguments
 (package-initialize)
@@ -17,11 +17,9 @@
 	;; written outside a list like this: 'better-defaults.
 	;; (You can think of them like strings)
 	better-defaults
-	cyberpunk-theme 
+	cyberpunk-theme
 	undo-tree
 	c0-mode
-	auctex
-	magit
 	ix
 	))
 
@@ -44,7 +42,7 @@
 ;; variable isn't set.  package-archive-contents is loaded from a
 ;; cache on disk if possible by package-initialize.
 ;; Unless we already have package metadata...
-(unless package-archive-contents 
+(unless package-archive-contents
   ;; ...run package-refresh-contents with no arguments to get metadata
   (package-refresh-contents))
 

@@ -1,4 +1,4 @@
-#+TITLE: Power Emacs
+#+TITLE: Emacs Fundamentals
 * TODO Scraps
 ** Fun ideas
    Note: I can easily come up with fun ideas for the elisp hacking part, it's the documentation and terminology part that is more difficult.
@@ -62,6 +62,15 @@ emacs -f help-with-tutorial
 
    To enter the Emacs tutorial while already inside Emacs, press "F1", then "t".
    (If you don't have an "F1" key, you can press "C-h" instead, then "t")
+
+*** Non-English
+   If English is not your native language, do this instead from the command line:
+#+begin_src sh
+emacs --eval '(help-with-tutorial t)'
+#+end_src
+   Or =C-u C-h t= inside Emacs.
+   In either case, then type your preferred option and press Enter.
+
 ** Terminology
    Emacs uses a small amount of unique terminology.
    This is all mostly described in the Emacs tutorial,
@@ -81,6 +90,7 @@ emacs -f help-with-tutorial
     - =C-x C-s= for Ctrl-x then immediately Ctrl-s.
       You don't need to release the Control key in between.
     - =C-x s= for Ctrl-x then immediately just s
+    - =C-h K= for Ctrl-h, then immediately just K. That is, upper-case K, entered as normal with shift.
     - =RET= for Return/Enter
     - =SPC= for Space
     - =DEL= for Backspace
@@ -352,8 +362,10 @@ C-x C-s
     - a link to the (editable[fn:editable]) source code initially defining the variable,
     - and a link to the Customization interface for that variable, if one exists.
     Quite useful while writing Elisp to configure Emacs.
-*** =C-h K=
-    Try =C-h K C-h K=, and =C-h K C-h F=, then move on to the next section. :)
+*** =C-h K=, =C-h F=
+    Try =C-h K C-h K= and =C-h K C-h F= 
+    (note that "K" and "F" are upper-case, so to enter them you press shift as normal).
+    then move on to the next section. :)
 ** Acesssing the Emacs Manual
    The Emacs manual is, unsurprisingly, very good.
    And, conveniently, it's all available from inside Emacs, in "info" format!
@@ -363,35 +375,34 @@ C-x C-s
    (You can also read manpages with =M-x man= or =M-x woman=)
    Sadly, info usage is rare these days. 
    I blame close-minded =vi= users.
+   
+   In fact, there are separate useful manuals for a number of different components of Emacs,
+   all categorized in the "Emacs" section in the info interface.
 
-*** Open the manual: =C-h i= or =M-x info=
-    This will send you to the =*info*= buffer, in the "info-mode" major mode,
-    which defaults to showing the info "directory node", which lists all the info manuals present on your system.
+*** Open Info: =C-h i= or =M-x info=
+    This will send you to the =*info*= buffer, in the =info-mode= major mode,
+    which defaults to showing the info "directory node", which lists all the info manuals present on your system, categorized by section.
+    You can go to the Emacs manual by scrolling down and clicking on it,
+    or moving point over the "Emacs" link and pressing Enter.
 
-    You may want to open the "Emacs" manual.
-    In the directory node, it's in the "Emacs" section;
-    you can open it by scrolling down and clicking on it, 
-    or by moving point over it and pressing Enter.
-    Or you can follow the instructions at the top of the buffer (if you're in the directory node).
+    You can also use =C-h r= to go directly to the Emacs manual.
 
-    If you're not in the directory node, you can get back there by pressing "d".
+    Note that the letter keys, which normally just insert text, are bound to various other useful commands in =info-mode=.
+    Likewise =SPC= and =DEL= now go forward and backward through the current manual, one screenful at a time.
+    (Since =info-mode= is for reading info, not editing it.)
 
-    (You can also use =C-h r= to go directly to the Emacs manual.)
-
-    You can open the info tutorial by pressing =h= when already inside info, or =M-x Info-help=.
-    It explains some concepts of info, and how to navigate it.
-    Or you might just want to use =C-h m= while in the info buffer to get a less laborious overview.
-    
-    
+    To learn about how to quickly and efficient navigate =*info*=,
+    press =h= while inside =*info*=, or type =M-x Info-help= from anywhere.
+    Or, to get a quick overview, you might just want to use =C-h m= while in =*info*=.
 *** =C-h K=
-    Go to the section of the manual for the entered keybinding;
-    helpful to find other similar keybindings.
+    This key, which you used before, goes to the section of the manual for the entered keybinding.
+    It's helpful to find other similar keybindings and commands.
 *** Exercise: Navigate to the Help section of the Emacs manual
-    =C-h K C-h C-h=
+    Solution: =C-h K C-h C-h=
     
     (That is, use =C-h K= to open the manual section about the following keybinding =C-h C-h=)
 
-    This is a great section of the manual, I like it a lot.
+    This isn't really an exercise. This is just a great section of the manual. I like it a lot. You should read it.
 *** Greatest hits
     Some manuals that are full of cool stuff!
 
@@ -436,83 +447,114 @@ c’ to find out what they do.
    - [[http://webchat.freenode.net?channels%3D%2523emacs][#emacs on Freenode]]
    - [[https://emacs.stackexchange.com][Emacs Stack Exchange]]
    - Google
-* TODO Basic programming workflow
-** undo and redo and undo-tree-visualize
-   The tutorial doesn't mention how to redo...
+* TODO Obligatory rehash of things covered by the tutorial
+  These are all covered by the tutorial.
+  But they're important, and I don't really trust you to read the tutorial...
+  And the concepts are useful to read about twice.
+
+** TODO Cutting and pasting 
+   Known in emacs as killing and yanking.
+   There is also the "kill ring".
+   This is covered by the Emacs tutorial.
+   
+   =yank-pop=
+   
+   Important: Explain the ideas of killing.
+** Repeating commands multiple times (universal argument)
+   =C-u= for positive argument.
+   =C--= for negative argument.
+   
+   Alternatively, =M-1=, =M-2=, ..., =M-0=, =M--= to enter specific counts.
+
+   One example use is for navigating around window splits quickly when you have a number of windows open:
+   Just do =M-3 C-x o=.
+   
+   You may also be looking for macros.
+* TODO Basic concepts/features to know
+  These are important concepts and features to know about, because otherwise you would probably use a much less efficient way.
+  As always, use the manual to learn more.
+
+** TODO Compiling and reacting to errors from Emacs
+   Maybe a programming workflow? If python, show M-x run-python. If C, show M-x compile.
+
+   Maybe even basic customization, adding a keybinding for M-x recompile?
+*** TODO M-g M-n/p
+    Oh, better yet, M-g n/p!
+** Find and replace
+   =M-x query-replace= takes two strings and, for each occurrence of the first string in the buffer, prompts the user whether to replace it with the second string.
+   It's bound to =M-%= by default.
+
+   =M-x query-replace-regexp= does the same thing, just with a regexp instead of the first string.
+   It's bound to =C-M-%= by default.
+
+   There is a large amount of find and replace functionality;
+   read the "Search" section of the manual.
+*** TODO editable occur
+    =M-x occur=,
+    =M-x occur-edit-mode=
+    
+** TODO undo and redo with undo-tree
+   The tutorial doesn't mention how to redo.
    I guess I should mention it, and also undo-tree-visualize.
-** quoted-insert
-   To insert a literal character, use =C-q=.
-** Use =C-s= and =C-r= to get around
-   This is a very Emacsy way of getting around.
+** Moving around quickly with search
+   Of course, there are many commands for specific movements over text, large and small, and you can read about them in the manual. 
+   But one very Emacsy way of getting around is by using the incremental search functionality.
+   Just start searching (with =C-s=) for a part of the line/section you want to go to,
+   and you can get to it quite fast and naturally.
 
    1. Press =C-s= (or =C-r=, doesn't matter)
    2. Type a part of the thing you are trying to move point to. Don't press Enter.
    3. Press =C-s= and =C-r= to move between matches until you get where you want to go.
    4. Possibly type more between presses, to narrow down the matches.
       
-   Note that this is intelligently case-sensitive.
-   It matches any case if you have only lower-case letters in your search string,
-   but if you include an upper-case letter it switches to requiring exact case.
-** Find and replace
-   =M-%=
-
-   =M-x replace-string= will prompt for two strings, and replace any occurence of the first with the latter.
-   There are more advanced find and replace commands;
-   read the section of the manual for =replace-string= with =C-h F= to find out.
-** Maybe a programming workflow? If python, show M-x run-python. If C, show M-x compile.
-   Maybe even basic customization, adding a keybinding for M-x recompile?
-** ix
-   Pasting to ix.io
-
-   Would be nice if I could get scpaste working...
-
-   Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link!
-   That could be awesome!
-   Too bad scpaste is broken and the link gets flushed out of the minibuffer instantly...
-** TeX input method
-   This is just kind of cool.
-** M-g M-n/p
-   Oh, better yet, M-g n/p!
-** auto-insert-mode
-** Universal argument
-   C-u for positive argument
-   C-- for negative argument
-   (Alternatively, M-1 and M- or any M-numbers to enter specific counts)
-   M-2, M-3 for example are helpful to navigate around window splits quickly.
-** Mark and point and region
+   Note that incremental search treats case intelligently.
+   It will be case-insensitive if you have only lower-case letters in your search string,
+   but if you include an upper-case letter it becomes case-sensitive.
+** TODO Mark and point and region
    Emacs has an interestingly flexible way to specify regions of text.
    There is a position in the buffer called "mark" which is moved around by certain actions (like searching),
    or set manually with C-SPC.
    Highlighting text is really just highlighting the region between mark and point.
    More than just highlighting, selenicely flexible  
-** editable occur
-   =M-x occur=,
-   =M-x occur-edit-mode=
-   
-** Macros
+** TODO Macros
    recording
    editing macros
-** kill ring
-   =yank-pop=
-** TRAMP
-   TRAMP stands for "Transparent Remote Access, Multiple Protocols".
-   It basically integrates ssh 
-   (as well as some other protocols - I use the sudo one occassionally)
-   with Emacs.
-   This is really deep integration, so pretty much everything in Emacs can be done transparently over the network.
-   In fact, I used it when I was writing these notes, 
-   which I'm writing in Emacs using [[https://addons.mozilla.org/en-US/firefox/addon/its-all-text/][It's All Text]].
-   I'm on my laptop, and I wanted to get to some notes on my desktop, earth.
-   So, I just did C-x C-f /ssh:earth:/home/sbaugh/myemacsnotes and I had the notes open in a buffer. 
-   This all tab-completed of course; 
-   Emacs knows the host "earth" that I defined in my .ssh/config, 
-   and it opened the connection as soon as I hit tab for the first time after typing the "/ssh:mydesktop:/" component,
-   so I had tab-completion on the remote path.
-   This works for remote file operations with M-x dired,
-   opening a remote shell with M-x shell,
-   pretty much everything.
-   For serious shell work I still ssh to hosts directly, of course.
-   But for just many tasks, it's very handy to be able to directly edit a file that lives on a remote host and still use my local Emacs configuration.
+** =M-x dired=
+   Emacs is not just capable of opening files, but also opening directories.
+   Use =C-x d= or =M-x dired= to open a directory in =dired=.
+   
+   =dired= has quite a lot of features for manipulating the contents of directories.
+   You don't necessarily need to learn them;
+   =dired= is an important concept mainly because Emacs sometimes wants to show you a directory,
+   and it will show you that directory in =dired=.
+   Nevertheless, as usual, the help and manual are good.
+** Editing files remotely over SSH and other protocols
+   Emacs has a subsystem called TRAMP, which stands for "Transparent Remote Access, Multiple Protocols".
+   Generally, you don't directly use TRAMP; it gets used as a side effect of other actions.
+   TRAMP allows you to use your local, graphical editor to edit files that are located on a remote, ssh-only server.
+
+   For example, to edit files on the remote host "unix.andrew.cmu.edu" with the username "sbaugh",
+   I could do
+   =C-x C-f /ssh:sbaugh@unix.andrew.cmu.edu: RET=
+   which would log in, possibly prompt for my password, and open a =dired= buffer showing files in my remote home directory.
+   I can use =C-x C-f= as normal from there.
+   Likewise, I can use =M-x shell= or =M-x eshell= to get a remote shell.
+   
+   Of course, the abbreviations located in your =~/.ssh/config= still work.
+   So what I would actually do is =C-x C-f /ssh:andrew: RET=.
+   This makes it simpler to type that prefix from other buffers;
+   I can be editing a local file, and do =C-x C-f /ssh:andrew:whatever.txt RET= to access a relevant remote file located in my home directory.
+   
+   The integration of TRAMP is very deep,
+   so nearly everything in Emacs can be done transparently over the network.
+* TODO Miscellaneous handy features
+** run a single shell command
+** quoted-insert
+   To insert a literal character, use =C-q=.
+** TeX input method
+   This is just kind of cool.
+** auto-insert-mode
+** run shells/eshell from emacs
 * Configuration
   Lesser programs are configured by clicking settings in a box, setting flags in some key-value store.
   If you're really lucky, they might store their configuration data in some editable plain text format, like INI or JSON.
@@ -644,13 +686,25 @@ c’ to find out what they do.
         ("melpa" . "http://melpa.milkbox.net/packages/")))
 #+end_src
 
+** TODO ix
+   Pasting to ix.io
+
+   Would be nice if I could get scpaste working...
+
+   Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link!
+   That could be awesome!
+   Too bad scpaste is broken and the link gets flushed out of the minibuffer instantly...
 ** magit
-   Preinstalled by the =init.el= I distributed.
    Available in Marmalade or MELPA.
 
    Probably the best git interface in existence, makes things convenient without abstraction.
    Allows you to use Emacs and git together in some really super-powered ways. 
    Try =M-x magit-blame=!
+** AUCTeX
+   Available in Marmalade or MELPA.
+   
+   Pretty awesome environment for writing LaTeX.
+   Includes inline previews!
 ** undo-tree
    Preinstalled by the =init.el= I distributed.
    Available in ELPA.
