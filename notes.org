@@ -1,4 +1,5 @@
 #+TITLE: Emacs Fundamentals
+#+HTML_HEAD: <style type="text/css">body{ max-width:50em; margin-left:auto; margin-right:auto; }</style>
 * TODO Scraps
 ** Fun ideas
    Note: I can easily come up with fun ideas for the elisp hacking part, it's the documentation and terminology part that is more difficult.
@@ -38,20 +39,48 @@ I guess I'll just mention cua-mode rather than enable it.
   come to my workshop,
   and you can learn the more controversial truth:
   It is also the world's best text editor.
-* TODO Introduction
+* Introduction
   What you learn this day will forever serve as your firm foundation in the arts of Emacs, 
   no matter who your teachers before and after.
   
   I will teach you how to act on your own in Emacs.
   You will not need to be dependent on gurus or wisemen or shamans,
   but will be able to harness Emacs purely through your own fingers and strength of will.
-* TODO Getting started
-  Some preliminary knowledge to make things work nicely.
+  
+#+begin_example
+ Energy starts surging through your fingertips. Sparks fly, making
+ the shadows grow and flicker ominously around you. You arch your
+ back and open your eyes as if for the first time. The text appears
+ more vibrant and colourful than you remember. Your fingers dance on
+ the keyboard commanding the cursor with a joyful precision and
+ control.
+ 
+ You lean back and marvel as a shimmering swirl of syntactic and
+ semantic structures project out of the screen and intertwine with a
+ fractal beauty. You watch as meaning recursively unfolds into deeper
+ meaning live in front of your eyes. You feel a deep and lasting
+ synchronicity form as the boundaries between you and your Emacs
+ wash away. You and your Emacs Live.
+ 
+ M-x start-hacking.
+#+end_example
+
+** Why not vim
+   There are lots of reasons, but one is that vim is just average at almost everything it does,
+   and when it comes to text editing it is very controversial.
+   Emacs, on the other hand, is uncontroversially the program with the world's best help system,
+   the best portable environment for Lisp hacking,
+   and the world's most live-hackable and extensible system.
+   (It's also a better text editor, and it can emulate vim way better than vim can emulate Emacs.)
+* Getting started						     :export:
+  Some preliminary, immediate knowledge to make things go smoothly.
 ** =Ctrl-g=
    This is your universal panic key.
    It interrupts whatever is happening and gets you back to a familiar state.
    It's the equivalent of Ctrl-c, for Emacs.
    If at first it doesn't seem to work, hit it some more!
+** =Ctrl-x Ctrl-c=
+   This is how to quit Emacs: Press =Ctrl-x=, then =Ctrl-c=.
 ** Emacs tutorial
    Do it!
    
@@ -60,98 +89,18 @@ I guess I'll just mention cua-mode rather than enable it.
 emacs -f help-with-tutorial
 #+end_src
 
-   To enter the Emacs tutorial while already inside Emacs, press "F1", then "t".
-   (If you don't have an "F1" key, you can press "C-h" instead, then "t")
+   To enter the Emacs tutorial while already inside Emacs, press =Ctrl-h=, then =t=.
 
 *** Non-English
-   If English is not your native language, do this instead from the command line:
+   If English is not your native language, you can take the tutorial in another language.
+
+   To do that from the command line, do this from the command line:
 #+begin_src sh
 emacs --eval '(help-with-tutorial t)'
 #+end_src
-   Or =C-u C-h t= inside Emacs.
-   In either case, then type your preferred option and press Enter.
+   Or, to choose the language of the tutorial from inside Emacs, press =Ctrl-u=, then =Ctrl-h=, then =t=.
 
-** Terminology
-   Emacs uses a small amount of unique terminology.
-   This is all mostly described in the Emacs tutorial,
-   and also in the Emacs glossary in the Emacs manual.
-   (which, as you will learn later in this document,
-   is one of the best manuals ever written)
-
-*** Keybinding notation
-    A "keybinding" is some keyboard input bound to perform some command.
-    For example, =C-a= goes to the beginning of the line.
-    Emacs uses a specialized notation for denoting keyboard commands.
-
-    - =C-h= for Ctrl-h.
-      That is, hold down the Control key, press h, then release the Control key.
-    - =M-f= for Alt-f.
-      Alt is historically known as the Meta key, so M stands for Meta.
-    - =C-x C-s= for Ctrl-x then immediately Ctrl-s.
-      You don't need to release the Control key in between.
-    - =C-x s= for Ctrl-x then immediately just s
-    - =C-h K= for Ctrl-h, then immediately just K. That is, upper-case K, entered as normal with shift.
-    - =RET= for Return/Enter
-    - =SPC= for Space
-    - =DEL= for Backspace
-      
-    A chain of keys pressed in sequence to have a single effect, like =C-x C-s=, is known as a "key chord".
-    Often "key chord" is also used to refer to a single keypress, like =C-a=.
-    Note that a keybinding in Emacs is simply a mapping from a keychord of one or more keys,
-    to some named function (as in "function call") written in the programming language underlying Emacs.
-    For example, =C-a= maps to =beginning-of-line=.
-    Later, in the documentation section, you'll learn a number of ways to reveal this mapping.
-*** Buffers
-    When you open a file, its text appears in a buffer, and you can edit it.
-    Each buffer has a name, which is usually the name of the file.
-    You can also create buffers that aren't associated with files, and save them (specifying a filename) to create a new file.
-    You can create a new buffer by switching to a buffer with a name that isn't already used.
-    
-*** Frames
-    Each instance of Emacs on a terminal, and each graphical instance, is a frame.
-    (In the context of a graphical environment, this would be called a "window";
-    but that word doesn't make much sense in a terminal...)
-    An Emacs process can have multiple frames, both terminal and graphical, which can be opened and closed independently.
-    Frames contain one or more windows in some arrangement.
-    
-*** Windows
-    A window contains exactly one buffer. 
-    A window is itself contained in a frame, possibly along with other windows arranged in some layout.
-    There can be multiple windows showing the same buffer, sometimes at different points in the buffer;
-    this is useful if you want to get multiple views into a large file.
-    Indeed, there can be multiple frames showing the same buffer, all supporting simultaneous editing...
-*** Point
-    The position of the text cursor; where new text will be inserted if you type.
-*** Modes, major and minor
-    For any buffer, there is exactly one major mode, and any number of minor modes.
-
-    The major mode determines the primary purpose and functionality of the buffer.
-    A buffer for editing C code would have c-mode as its major mode,
-    and a buffer for editing Python code would have python-mode.
-    Those modes provide syntax highlighting and customize the keybindings to more suited for the specific language.
-    When you open a file ending in ".c" or ".py", Emacs automatically runs the appropriate mode.
-    Other major modes exist and provide other more arcane functionality.
-    
-    Minor modes generally provide less significant functionality,
-    and there can be any number of them active in a buffer.
-    Some minor modes are called "global", and can be turned on or off for all buffers at once.
-    
-    One can enter a major or minor mode in the same way one can enter any other Emacs command:
-    with =M-x name-of-mode=
-    Line numbers, for example, can be turned on for the current buffer by running =M-x linum-mode=,
-    or for all buffers with =M-x global-linum-mode=. (But I don't recommend it...)
-*** Minibuffer
-    The line at the very bottom of the screen 
-    where brief messages and prompts for input are displayed.
-*** Modeline
-    Just above the minibuffer,
-    displays the name of the current buffer,
-    the percentage position in the document,
-    the line number that point is at,
-    the currently active modes in short-form,
-    and occassionally other helpful information.
-
-    Mouse over it in graphical Emacs to see tool-tips describing what everything is.
+   In either case, type your preferred option from the list (possibly pressing tab to tab-complete) and press Enter.
 ** Running Emacs
    Here are a few tips about how best to run Emacs. 
    Just running =emacs= while SSH'd into unix.andrew.cmu.edu is fine, 
@@ -164,8 +113,8 @@ emacs --eval '(help-with-tutorial t)'
     being able to experiment more with Emacs features,
     and getting access to the latest version of Emacs with the latest advancements.
     
-    You can check your Emacs version by running "emacs --version" in a shell, 
-    or running "M-x version" from inside Emacs.
+    You can check your Emacs version by running =emacs --version= in a shell, 
+    or running =M-x version= from inside Emacs.
 
 **** Linux
       Use your package manager. :)
@@ -173,26 +122,28 @@ emacs --eval '(help-with-tutorial t)'
 **** OS X
      Apple ships an ancient version of Emacs and doesn't include the GUI version.
      Update your version of Emacs on OS X by downloading an installer from [[http://emacsformacosx.com/][here]].
+
      Or, if you have Homebrew installed, run
 #+begin_src sh
 brew install emacs --cocoa
 #+end_src
 
      To run the terminal version, you'll need to find the Emacs binary and add it to your PATH.
-     I don't know how to do this with Homebrew, but for the installer I linked above, there are instructions [[http://emacsformacosx.com/tips][here]].
+     I don't know how to do this with Homebrew, but for the "emacsformacosx.com" installer that I linked above, there are instructions [[http://emacsformacosx.com/tips][here]].
 **** Windows
-      Emacs is surprisingly well supported on Windows - way better than vim is.
+      Emacs is surprisingly well supported on Windows.
       Check out [[http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/index.html][this FAQ on Emacs for Windows]], or just go [[http://www.gnu.org/software/emacs/manual/html_node/efaq-w32/Downloading.html#Downloading][directly to the download]].
 *** Emacs in GUI mode
     It's better to use GUI Emacs rather than terminal Emacs.
     GUI Emacs comes with buttons! 
     And you can use your mouse!
     And it's prettier!
-    And even for people who never use the mouse (like me) it is better than terminal Emacs.
+    And even for people who never use the mouse (such as the author) it is better than terminal Emacs.
 
     But if you must use Emacs in the terminal, 
     read my article on the various quirks and limitations of the terminal environment: 
     http://catern.com/posts/terminal_quirks.html
+
     (If you wonder why using GUI Emacs is better than terminal Emacs for keyboard users, that article explains why.)
 *** Emacs as a daemon
     Emacs can run as a daemon, a process running in the background without necessarily displaying any graphical or terminal interface.
@@ -230,7 +181,7 @@ emacs --daemon
 
     But if you're running =emacsclient -c= to open that file, then the best possible thing that could happen, does happen:
     Emacs opens normally, and the buffer for that file is shared between the two open Emacs frames;
-    any of your existing edits show up in the new Emacs.[fn:whyiswitched]
+    any of your existing edits show up in the new Emacs.
 
     In fact, you can use this buffer-sharing capability of Emacs for collaborative editing!
     I quite frequently collborate with colleagues by having us both connect to a shared Emacs daemon,
@@ -243,9 +194,23 @@ emacs --daemon
     It's very useful to remap CapsLock to Ctrl.
     CapsLock is a useless key, and Ctrl is a very useful one, 
     so it's good to make Control easier to hit while touch typing.
+
     You can follow this guide: http://emacswiki.org/emacs/MovingTheCtrlKey
-    (This is of course still helpful even if you don't use Emacs.)
-** TODO Bare essentials of configuration
+
+    Moving the Ctrl key is of course still helpful even if you don't use Emacs.
+*** Getting normal shortcuts for cut and paste, etc.
+    In graphical Emacs in OS X, 
+    you actually already have "normal" shortcuts for cut and paste by default.
+    
+    If you're using Emacs in the terminal, though,
+    or you're using Linux or Windows,
+    you may want =Ctrl-c=, =Ctrl-x=, and =Ctrl-v= to copy, cut and paste.
+    
+    You can do this by opening the "Options" menu at the top,
+    and selecting "Use CUA keys".
+    
+    That is a bit of a dubious choice, but it won't interfere too much.
+** Bare essentials of configuration
    Later in this document I will explain configuration in detail,
    after the sections on documentation and basic usage.
    But to set the foundations for that section,
@@ -256,37 +221,140 @@ emacs --daemon
    I hate to tell you to do something without explaining it, but that's useful in this case.
    So, for the only time in this document, please follow these instructions blindly to put the simple example configuration in place.
    
+   After you follow the following instructions, 
+   the next time you start Emacs will take longer than usual and probably be scarier than usual.
+   But then just restart Emacs and things will be normal.
+   
    If you will use Emacs both remotely and on your local computer,
    pick the appropriate two branches.
    (Note that all these branches give you the exact same configuration.)
 
-*** Emacs installed on =unix.andrew.cmu.edu= (or any remote Linux machine)
-    Open a new terminal. Log in to the remote server in question as normal. 
+*** Emacs installed on =unix.andrew.cmu.edu= (or any remote machine with AFS)
+    Open a new terminal. Log in to =unix.andrew.cmu.edu= as normal. (Probably this is by typing =ssh andrew=)
+
     Copy and paste the following:
 
+#+begin_src sh
+mkdir -p ~/.emacs.d/ && mv ~/.emacs{,.bak} 2> /dev/null || mv ~/emacs.d/init.el{,.bak} 2> /dev/null
+cp ~sbaugh/www/init.el ~/.emacs.d/
+#+end_src
+
 *** Emacs installed on your local Linux/OS X machine
+    Open a new terminal. Do not run ssh. Do not log in to a remote server. Do not pass go, do not collect $200.
+
+    Copy and paste the following:
 
 #+begin_src sh
-mkdir -p ~/.emacs.d/ && curl 
+mkdir -p ~/.emacs.d/ && mv ~/.emacs{,.bak} 2> /dev/null || mv ~/emacs.d/init.el{,.bak} 2> /dev/null
+curl -o ~/.emacs.d/init.el https://www.contrib.andrew.cmu.edu/~sbaugh/init.el
 #+end_src
 
 *** Emacs installed on your local Windows machine
-    Open Emacs and type the following (if you don't understand what =C-x C-f= is, go up to the Terminology section):
+    Open Emacs and type the following (if you don't understand what =C-x C-f= is, go down to the Terminology section):
 
 #+begin_example
 C-x C-f ~/.emacs.d/init.el 
 #+end_example
    
-    Open your browser and go to this URL:
+    Open your browser and go to this URL: https://www.contrib.andrew.cmu.edu/~sbaugh/init.el
     Copy the text at that URL. 
 
     Go back to Emacs and paste that text in. 
-    (If you did the tutorial, you know how to paste, but otherwise just use the toolbar paste button or the  and paste it and and type exactly what follows:
+    (If you did the tutorial, you know how to paste, but otherwise just use the toolbar paste button or just hit "Ctrl-y")
     
     Now type:
 #+begin_example
 C-x C-s
 #+end_example
+    
+    And restart Emacs.
+
+* Terminology
+  Emacs uses a small amount of unique terminology.
+  Most of these are described in the Emacs tutorial,
+  and also in the Emacs glossary in the Emacs manual.
+  (which, as you will learn later in this document,
+  is one of the best manuals ever written)
+
+** Keybinding notation
+   A "keybinding" is some keyboard input bound to perform some command.
+   For example, =C-a= goes to the beginning of the line.
+   Emacs uses a specialized notation for denoting keyboard commands.
+
+   - =C-h= for Ctrl-h.
+     That is, hold down the Control key, press h, then release the Control key.
+   - =M-f= for Alt-f.
+     Alt is historically known as the Meta key, so M stands for Meta.
+   - =C-x C-s= for Ctrl-x then immediately Ctrl-s.
+     You don't need to release the Control key in between.
+   - =C-x s= for Ctrl-x then immediately just s
+   - =C-h K= for Ctrl-h, then immediately just K. That is, upper-case K, entered as normal with shift.
+   - =RET= for Return/Enter
+   - =SPC= for Space
+   - =DEL= for Backspace
+     
+   A chain of keys pressed in sequence to have a single effect, like =C-x C-s=, is known as a "key chord".
+   Often "key chord" is also used to refer to a single keypress, like =C-a=.
+   Note that a keybinding in Emacs is simply a mapping from a keychord of one or more keys,
+   to some named function (as in "function call") written in the programming language underlying Emacs.
+   For example, =C-a= maps to =beginning-of-line=.
+   Later, in the documentation section, you'll learn a number of ways to reveal this mapping.
+** Buffers
+   When you open a file, its text appears in a buffer, and you can edit it.
+   Each buffer has a name, which is usually the name of the file.
+   You can also create buffers that aren't associated with files, and save them (specifying a filename) to create a new file.
+   You can create a new buffer by switching to a buffer with a name that isn't already used.
+   
+** Frames
+   Each instance of Emacs on a terminal, and each graphical instance, is a frame.
+   (In the context of a graphical environment, this would be called a "window";
+   but that word doesn't make much sense in a terminal...)
+   An Emacs process can have multiple frames, both terminal and graphical, which can be opened and closed independently.
+   Frames contain one or more windows in some arrangement.
+   
+** Windows
+   A window contains exactly one buffer. 
+   A window is itself contained in a frame, possibly along with other windows arranged in some layout.
+   There can be multiple windows showing the same buffer, sometimes at different points in the buffer;
+   this is useful if you want to get multiple views into a large file.
+   Indeed, there can be multiple frames showing the same buffer, all supporting simultaneous editing...
+** Point
+   The position of the text cursor; where new text will be inserted if you type.
+** Modes, major and minor
+   For any buffer, there is exactly one major mode, and any number of minor modes.
+
+   The major mode determines the primary purpose and functionality of the buffer.
+   A buffer for editing C code would have c-mode as its major mode,
+   and a buffer for editing Python code would have python-mode.
+   Those modes provide syntax highlighting and customize the keybindings to more suited for the specific language.
+   When you open a file ending in ".c" or ".py", Emacs automatically runs the appropriate mode.
+   Other major modes exist and provide other more arcane functionality.
+   
+   Minor modes generally provide less significant functionality,
+   and there can be any number of them active in a buffer.
+   Some minor modes are called "global", and can be turned on or off for all buffers at once.
+   
+   One can enter a major or minor mode in the same way one can enter any other Emacs command:
+   with =M-x name-of-mode=
+   Line numbers, for example, can be turned on for the current buffer by running =M-x linum-mode=,
+   or for all buffers with =M-x global-linum-mode=. (But I don't recommend it...)
+** Minibuffer
+   The line at the very bottom of the screen 
+   where brief messages and prompts for input are displayed.
+** Modeline
+   Just above the minibuffer,
+   displays the name of the current buffer,
+   the percentage position in the document,
+   the line number that point is at,
+   the currently active modes in short-form,
+   and occassionally other helpful information.
+
+   Mouse over it in graphical Emacs to see tool-tips describing what everything is.
+** Extended command
+   =M-x= is the keybinding to =execute-extended-command=.
+   You can think of it as just running the Emacs function that you enter after it.
+** Killing and yanking
+   Cutting and pasting.
 * Learning and Documentation
   The Emacs help system is the best help system of any application ever.
 ** Emacs tutorial: =C-h t=
@@ -301,10 +369,10 @@ C-x C-s
    (Of course, you could also leave those modes temporarily, 
    with =M-x cua-mode= or =M-x evil-local-mode=, respectively, 
    and then all the default keybindings will work.)
-** describe-*
+** describe-anything
    Pressing =C-h= then another key will activate various parts of the help system.
    In particular, many of these bindings will activate "describe" commands, which... describe things.
-   Of course, these can also be run with =M-x describe-whatever=.
+   Of course, these can also be run with variations on =M-x describe-whatever=.
    For example, =M-x describe-key=.
    Below is a small selection of some useful describe keybindings.
    (Links shown by describe commands are underlined, and can be followed by clicking on the link, or by moving point to the link and pressing Enter)
@@ -314,9 +382,11 @@ C-x C-s
     Prompts for you to press some keybinding.
     Press any keybinding to see 
     - the function it is bound to,
-    - other keybindings bound to the same function,
     - the documentation for that function,
+    - other keybindings bound to the same function,
     - and a link to the (editable[fn:editable]) source code implementing the function.
+      
+    This is useful to find out what a keybinding does.
 
     Note that a keybinding in Emacs is simply a mapping from a sequence of one or more keys,
     to some named function (as in "function call") written in the programming language underlying Emacs.
@@ -332,16 +402,10 @@ C-x C-s
     indexed by a list of links at the top.
     The major mode comes first, then the minor modes in alphabetical order.
     The names of functions are links which will run =describe-function=.
-*** =C-h b=
-    Runs =describe-bindings=.
-    This will show a full list of active bindings,
-    marked either 
-    - as key translations (see the manual, not relevant to most people),
-    - as global bindings, 
-    - or by the mode creating those bindings.
-    The names of functions are links which will run =describe-function=.
-    You should generally prefer =C-h m= as it actually contains documentation,
-    but it doesn't list literally all bindings, and this does.
+    
+    This is useful to learn about the features of your current major and minor modes.
+    It's a very important command!
+    It should be your first recourse if confused by some mode.
 *** =C-h f=
     Runs =describe-function=.
     Prompts for you to type in the name of a Lisp function (such as =describe-function=). 
@@ -350,7 +414,21 @@ C-x C-s
     - any keybindings bound to that function,
     - the documentation for that function,
     - and a link to the (editable[fn:editable]) source code implementing the function.
-    Quite useful while writing Elisp to configure Emacs.
+
+    This is useful if you want to see if a function you've been running with =M-x=
+    already has some convenient keybinding,
+    or when writing Elisp to configure Emacs.
+*** =C-h b=
+    Runs =describe-bindings=.
+    This will show a full list of active bindings,
+    marked either 
+    - as key translations (see the manual, not relevant to most people),
+    - as global bindings, 
+    - or by the mode creating those bindings.
+    The names of functions are links which will run =describe-function=.
+
+    You should generally prefer =C-h m= as it actually contains documentation.
+    But =C-h m= doesn't list literally all bindings, and this does.
 *** =C-h v=
     Runs =describe-variable=.
     Prompts for you to type in the name of a Lisp variable (such as =package-archives=). 
@@ -361,11 +439,15 @@ C-x C-s
     - the documentation for that variable,
     - a link to the (editable[fn:editable]) source code initially defining the variable,
     - and a link to the Customization interface for that variable, if one exists.
-    Quite useful while writing Elisp to configure Emacs.
+
+    This is useful while writing Elisp to configure Emacs.
 *** =C-h K=, =C-h F=
     Try =C-h K C-h K= and =C-h K C-h F= 
-    (note that "K" and "F" are upper-case, so to enter them you press shift as normal).
+    (note that "K" and "F" are upper-case, so to enter them you press shift as normal)
     then move on to the next section. :)
+    
+    These are both useful to read more detailed documentation, possibly with examples,
+    and find other similar commands to the one you entered.
 ** Acesssing the Emacs Manual
    The Emacs manual is, unsurprisingly, very good.
    And, conveniently, it's all available from inside Emacs, in "info" format!
@@ -394,9 +476,10 @@ C-x C-s
     To learn about how to quickly and efficient navigate =*info*=,
     press =h= while inside =*info*=, or type =M-x Info-help= from anywhere.
     Or, to get a quick overview, you might just want to use =C-h m= while in =*info*=.
-*** =C-h K=
-    This key, which you used before, goes to the section of the manual for the entered keybinding.
-    It's helpful to find other similar keybindings and commands.
+*** =C-h K=, =C-h F=
+    These keybindings, which you used before, 
+    goes directly to the section of the manual documenting the entered keybinding or command.
+    It's helpful to find other similar keybindings and commands, by reading the surrounding sections.
 *** Exercise: Navigate to the Help section of the Emacs manual
     Solution: =C-h K C-h C-h=
     
@@ -447,19 +530,35 @@ c’ to find out what they do.
    - [[http://webchat.freenode.net?channels%3D%2523emacs][#emacs on Freenode]]
    - [[https://emacs.stackexchange.com][Emacs Stack Exchange]]
    - Google
-* TODO Obligatory rehash of things covered by the tutorial
+* Obligatory rehash of things covered by the tutorial
   These are all covered by the tutorial.
   But they're important, and I don't really trust you to read the tutorial...
   And the concepts are useful to read about twice.
 
-** TODO Cutting and pasting 
-   Known in emacs as killing and yanking.
-   There is also the "kill ring".
-   This is covered by the Emacs tutorial.
+** Cutting and pasting 
+   In Emacs, cutting is called "killing", and pasting "yanking" (as in, "yanking off of the clipboard").
    
-   =yank-pop=
+   Most Emacs commands to delete text (notable excepting =DEL=, a.k.a. Backspace) are actually commands to do killing.
+   So when you delete text, it gets put on your "clipboard" for later yanking.
+   For example, =C-k= kills the rest of the line.
    
-   Important: Explain the ideas of killing.
+   This might be annoying if you wanted to delete some text then yank something you copied earlier.
+   But in Emacs, the "clipboard" is actually the "kill ring".
+   The last 60 things (by default) that you have killed are stored in the kill ring, and all are accessible for yanking.
+   By default, yanking just yanks the topmost, most recent item to be added to the kill ring.
+   
+   Note that if you perform two or more killing commands in succession,
+   the text they killed gets concatenated, so all the text you killed is together on the top of the kill ring.
+   
+   So, if you kill something, then want to yank it again,
+   you can do =C-y=.
+   If you want to go further back in the kill ring, you can do =C-y= with a numeric argument,
+   or =C-y= then repeatedly =M-y= to cycle backwards.
+   So =M-2 C-y= or =C-y M-y M-y= yank exactly the same thing.
+
+   If you used my init.el, you can use =M-x browse-kill-ring=, which is provided by the =browse-kill-ring= package.
+   
+   As always, do the tutorial, and if you want, read the manual to learn more.
 ** Repeating commands multiple times (universal argument)
    =C-u= for positive argument.
    =C--= for negative argument.
@@ -470,16 +569,69 @@ c’ to find out what they do.
    Just do =M-3 C-x o=.
    
    You may also be looking for macros.
-* TODO Basic concepts/features to know
+* Basic concepts/features to know
   These are important concepts and features to know about, because otherwise you would probably use a much less efficient way.
   As always, use the manual to learn more.
+** Commenting out code
+   To comment out the active region, according to the syntax of the active mode, use =M-;=.
 
-** TODO Compiling and reacting to errors from Emacs
-   Maybe a programming workflow? If python, show M-x run-python. If C, show M-x compile.
+   There are other commenting commands 
+   if you want to comment out the current line or function or whatever;
+   read the manual to learn about them.
+** Minibuffer usage
+   You can of course use the normal movement bindings,
+   like =M-f= and =M-b=,
+   in the minibuffer.
+   And likewise you can kill and yank as usual
+   
+   You can also use =M-n= and =M-p= to cycle to next and previous history.
+   (This is generally the case in Emacs for any place that might have command history.)
+** Programming workflow
+   Check the "Building" section of the manual for more information.
 
-   Maybe even basic customization, adding a keybinding for M-x recompile?
-*** TODO M-g M-n/p
-    Oh, better yet, M-g n/p!
+*** Compiling
+**** SML
+     Hit =C-c C-c= while editing an SML file.
+     It will prompt you for a compile command.
+     For most, if not all, CMU classes, you will need to adjust this to say
+     =CM.make("sources.cm")=.
+**** C or C0
+     =M-x compile=, then =M-x recompile=.
+
+     If you want to recompile rapidly, =M-x M-p RET= is fairly fast,
+     as long as =recompile= was your most recent command.
+*** Responding to compile errors
+    You can use =M-g n= and =M-g p= in the buffer you compiled
+    to cycle through compile errors.
+    This wil move point to the line that the compiler claims was problematic.
+
+    =M-g M-n= and =M-g M-p= do the same thing, if you find those to be more ergonomic.
+** Undo and Redo
+   The Emacs undo system is very powerful,
+   but confusingly for modern users, does not come with a redo command.
+
+   Emacs of course does have infinite undo, and you can get back to any previous state of your buffer.
+   It's just that "redo" is not a separate command
+   but is instead implemented by the user undoing their previous undos.
+   If you perform =undo= several times in series, it will undo your previous actions, *including* your previous undos, but *not* undos that you have just done.
+   If you break that chain of =undo= commands with any non-undo command,
+   further undos will begin undoing the undos you just did.
+
+   Some rave about this system, but I think it is a little roundabout.
+   So, in the =init.el= I provided,
+   I installed and enabled the popular package =undo-tree=,
+   which runs as a minor mode in all buffers.
+
+   =undo-tree= provides an =redo= command and wraps the =undo= command so that it cannot undo undos.
+   It also provides a useful command =undo-tree-visualize=, which is a tree visualization of your undo history which can display quite a bit of visualization.
+   Read the documentation of both =undo-tree-mode= and =undo-tree-visualizer=mode= with =C-h m=,
+   or just know these bindings: 
+   - undo-tree-undo: =C-/=
+   - undo-tree-redo: =C-?=
+   - undo-tree-visualize: =C-x u=
+     
+   =undo-tree= may well be added to core Emacs at some point relatively soon;
+   it is already in ELPA, which means the only thing differentiating it from a core Emacs package is that it is not shipped by default.
 ** Find and replace
    =M-x query-replace= takes two strings and, for each occurrence of the first string in the buffer, prompts the user whether to replace it with the second string.
    It's bound to =M-%= by default.
@@ -489,13 +641,14 @@ c’ to find out what they do.
 
    There is a large amount of find and replace functionality;
    read the "Search" section of the manual.
-*** TODO editable occur
-    =M-x occur=,
-    =M-x occur-edit-mode=
+*** Batch edit occurrences of some text
+    =M-x occur= takes a regular expresion and shows all lines matching that regular expression in a new buffer.
+    It can operate over multiple buffers,
+    and you can travel to the actual location of the line just by pressing =RET= or clicking on it.
     
-** TODO undo and redo with undo-tree
-   The tutorial doesn't mention how to redo.
-   I guess I should mention it, and also undo-tree-visualize.
+    But its most compelling feature is that it can be edited, and the original lines will be edited as well.
+    Press =e= in an =*Occur*= buffer to shift into editable mode, and you can mess with lines in the original buffer(s) in whatever way you wish.
+    As always, use =C-h f= and =C-h m= to get more familiar with what =occur= can do.
 ** Moving around quickly with search
    Of course, there are many commands for specific movements over text, large and small, and you can read about them in the manual. 
    But one very Emacsy way of getting around is by using the incremental search functionality.
@@ -510,15 +663,21 @@ c’ to find out what they do.
    Note that incremental search treats case intelligently.
    It will be case-insensitive if you have only lower-case letters in your search string,
    but if you include an upper-case letter it becomes case-sensitive.
-** TODO Mark and point and region
-   Emacs has an interestingly flexible way to specify regions of text.
-   There is a position in the buffer called "mark" which is moved around by certain actions (like searching),
-   or set manually with C-SPC.
-   Highlighting text is really just highlighting the region between mark and point.
-   More than just highlighting, selenicely flexible  
-** TODO Macros
-   recording
-   editing macros
+** Macros - repeating sequences of actions
+   Emacs has a quite powerful macro system, which is heavily used by Emacs afficianados.
+   A "macro" is a recording of the commands/text you input that can be later replayed to perform actions multiple times.
+   If I record a macro of myself performing some sequence of actions,
+   I can use that macro to perform those actions many times without entering the actions again and again.
+
+   To cover it briefly:
+   - =F3= begins recording a macro, during which time you can perform whatever actions you'd like.
+   - =F4= ends recording a macro. Actions performed between =F3= and =F4= will be stored in the macro.
+   - =F4= when not recording a macro repeats the most recently recorded macro.
+     So press =F4= again when you want to run the macro you recorded.
+   
+   Of course, more than one macro can be stored at a time.
+   Macros can be edited, stored persistently between Emacs sessions, and all kinds of useful features.
+   Take a look at the manual to learn more.
 ** =M-x dired=
    Emacs is not just capable of opening files, but also opening directories.
    Use =C-x d= or =M-x dired= to open a directory in =dired=.
@@ -548,13 +707,50 @@ c’ to find out what they do.
    The integration of TRAMP is very deep,
    so nearly everything in Emacs can be done transparently over the network.
 * TODO Miscellaneous handy features
-** run a single shell command
+** Registers
+   Registers are sufficiently well explained by the manual.
+
+#+begin_quote
+Emacs "registers" are compartments where you can save text, rectangles,
+positions, and other things for later use.  Once you save text or a
+rectangle in a register, you can copy it into the buffer once, or many
+times; once you save a position in a register, you can jump back to that
+position once, or many times.
+
+Each register has a name that consists of a single character, which
+we will denote by R; R can be a letter (such as ‘a’) or a number (such
+as ‘1’); case matters, so register ‘a’ is not the same as register ‘A’.
+
+   A register can store a position, a piece of text, a rectangle, a
+number, a window configuration, or a file name, but only one thing at
+any given time.  Whatever you store in a register remains there until
+you store something else in that register.  To see what register R
+contains, use ‘M-x view-register’:
+#+end_quote
+
+   Read more for more.
+** Mark and point and region
+   Emacs has a nicely flexible way to specify regions of text.
+   There is a position in the buffer called "mark" which is moved around by certain actions (like searching),
+   or set manually at the current location of point with =C-SPC=.
+   Highlighting text is really just highlighting the region between mark and point.
+
+   Since the mark can be set, manipulated and displayed by various other commands,
+   proficient Emacs users can use point and mark to select and manipulate text without selecting regions in the conventional way.
+
+   One example is that after pressing =C-SPC=, you can still type.
+   Mark is still where point was when you pressed =C-SPC=.
+   So you can press =C-SPC=, type some text, press =M-w= to kill between point and mark, and paste it immediately with =C-y=.
+   
+   To learn more, read the manual.
+** TODO run a single shell command
+   =M-!= or =C-h M-!=.
 ** quoted-insert
-   To insert a literal character, use =C-q=.
-** TeX input method
-   This is just kind of cool.
-** auto-insert-mode
-** run shells/eshell from emacs
+   To insert a literal character, use =C-q= then the character to insert.
+** TODO Input methods (including LaTeX)
+   TeX input method is cool, others are also cool.
+** TODO auto-insert-mode
+** TODO run shells/eshell from emacs
 * Configuration
   Lesser programs are configured by clicking settings in a box, setting flags in some key-value store.
   If you're really lucky, they might store their configuration data in some editable plain text format, like INI or JSON.
@@ -686,14 +882,11 @@ c’ to find out what they do.
         ("melpa" . "http://melpa.milkbox.net/packages/")))
 #+end_src
 
-** TODO ix
-   Pasting to ix.io
-
-   Would be nice if I could get scpaste working...
-
-   Configure scpaste to paste to ~/www, then generate cmu.io/~andrewid/ link!
-   That could be awesome!
-   Too bad scpaste is broken and the link gets flushed out of the minibuffer instantly...
+** ix
+   Available in Marmalade or MELPA.
+   
+   Just a helpful utility that allows you to send the buffer or the active region to an online pastebin and returns the generated URL.
+   =M-x ix= is the command to paste region (if active) or buffer (if region not active).
 ** magit
    Available in Marmalade or MELPA.
 
@@ -704,7 +897,7 @@ c’ to find out what they do.
    Available in Marmalade or MELPA.
    
    Pretty awesome environment for writing LaTeX.
-   Includes inline previews!
+   Includes inline previews when in a graphical environment!
 ** undo-tree
    Preinstalled by the =init.el= I distributed.
    Available in ELPA.
@@ -742,6 +935,8 @@ c’ to find out what they do.
 *** =M-x gomoku=
 *** =M-x dunnet=
 * Programming in Elisp
+  Read the "Intro to Emacs Lisp" manual.
+
 ** Lisp basics
    http://learnxinyminutes.com/docs/elisp/
    (I really like that site)
@@ -756,10 +951,6 @@ c’ to find out what they do.
 ** write a time-tracking extension (workshop)
    Use quantified self extension as an example of the ease of configuration
 * Other non-Emacs best practices
-** keyboard based workflow
-   Basically anything that enables a keyboard based workflow.
-   By not moving your hands to the mouse or even to Home/End/etc, you can type and edit faster.
-   Just make sure you know how to touch type.
 ** Semantic Linefeeds!
    One sentence (or clause) per line.
    Pretty much every kind of structured text will just ignore single newlines (LaTeX, Markdown).
